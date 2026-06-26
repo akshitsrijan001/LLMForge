@@ -9,7 +9,7 @@ import {
 
 export default function Header() {
   return (
-    <header className="h-16 border-b border-[#2A211B] bg-[#171311] flex items-center justify-between px-8">
+    <header className="h-20 border-b border-[#2A211B] bg-[#171311] flex items-center justify-between px-8">
 
       {/* Left */}
 
@@ -31,7 +31,7 @@ export default function Header() {
 
         <div>
 
-          <p className="text-xs text-gray-500 uppercase">
+          <p className="text-base text-gray-500 uppercase">
             Session
           </p>
 
@@ -47,11 +47,11 @@ export default function Header() {
 
       <div className="flex items-center gap-4">
 
-        <button className="flex items-center gap-2 bg-[#221c18] px-4 py-2 rounded-xl hover:bg-[#2A211B] transition">
+        <button className="flex items-center gap-2 bg-[#221c18] px-5 py-3 rounded-xl hover:bg-[#2A211B] transition">
 
           <span>Llama 3 (8B)</span>
 
-          <ChevronDown size={16} />
+          <ChevronDown size={22} />
 
         </button>
 

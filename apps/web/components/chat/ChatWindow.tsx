@@ -1,31 +1,46 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { Message } from "../../types/chat";
 import MessageBubble from "./MessageBubble";
 
-export default function ChatWindow() {
+type ChatWindowProps = {
+  messages: Message[];
+  loading: boolean;
+};
+
+export default function ChatWindow({
+  messages,
+  loading,
+}: ChatWindowProps) {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+
   return (
     <div className="mt-10 max-w-5xl mx-auto space-y-6">
 
-      <MessageBubble
-        role="user"
-        content="Can you help me design a FastAPI architecture using Redis and WebSockets?"
-      />
+      {messages.map((message, index) => (
+        <MessageBubble
+          key={index}
+          role={message.role}
+          content={message.content}
+        />
+      ))}
 
-      <MessageBubble
-        role="assistant"
-        content={`Absolutely!
+      {loading && (
+        <div className="flex justify-start">
+          <div className="bg-[#221c18] border border-[#2A211B] rounded-2xl px-5 py-4 text-orange-400 animate-pulse">
+            🤖 LLMForge is thinking...
+          </div>
+        </div>
+      )}
 
-Redis Pub/Sub combined with FastAPI WebSockets is an excellent architecture for low-latency AI applications.
-
-### Suggested Stack
-
-• FastAPI
-• Redis
-• WebSockets
-• PostgreSQL
-
-This architecture scales horizontally and supports real-time updates.`}
-      />
+      <div ref={bottomRef} />
 
     </div>
   );

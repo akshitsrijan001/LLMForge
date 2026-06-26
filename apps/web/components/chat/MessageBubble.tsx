@@ -1,5 +1,8 @@
 "use client";
 
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 type Props = {
   role: "user" | "assistant";
   content: string;
@@ -24,9 +27,11 @@ export default function MessageBubble({
             : "bg-[#221c18] border border-[#2A211B] text-gray-200"
         }`}
       >
-        <p className="leading-7 whitespace-pre-wrap">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+        >
           {content}
-        </p>
+        </ReactMarkdown>
       </div>
     </div>
   );

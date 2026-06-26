@@ -4,6 +4,7 @@ import { Message } from "../types/chat";
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(false);
 
   async function ask(prompt: string, model: string) {
     // User message
@@ -19,6 +20,7 @@ export function useChat() {
     setMessages(history);
 
     try {
+      setLoading(true);
       const result = await sendChat({
         prompt,
         model,
@@ -32,7 +34,9 @@ export function useChat() {
 
       // Add assistant reply
       setMessages((prev) => [...prev, assistantMessage]);
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.error(err);
 
       const errorMessage: Message = {
@@ -47,5 +51,6 @@ export function useChat() {
   return {
     messages,
     ask,
+    loading,
   };
 }

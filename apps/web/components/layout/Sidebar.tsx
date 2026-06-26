@@ -20,23 +20,23 @@ export default function Sidebar() {
       <div>
 
         {/* Logo */}
-        <h1 className="text-2xl font-bold text-white mb-8">
+        <h1 className="text-3xl font-bold text-white mb-8">
           🚀 LLMForge
         </h1>
 
         {/* New Session */}
-        <button className="w-full bg-orange-500 hover:bg-orange-400 transition rounded-xl py-3 text-white font-medium flex items-center justify-center gap-2">
-          <Plus size={18} />
+        <button className="w-full bg-orange-500 hover:bg-orange-400 transition rounded-xl py-4 text-white font-medium flex items-center justify-center gap-2">
+          <Plus size={20} />
           New Session
         </button>
 
         {/* Search */}
         <div className="mt-6">
           <div className="flex items-center bg-[#221c18] rounded-xl px-3 py-2">
-            <Search size={18} className="text-gray-400" />
+            <Search size={20} className="text-gray-400" />
             <input
               placeholder="Search sessions..."
-              className="ml-2 bg-transparent outline-none text-sm text-white w-full placeholder:text-gray-500"
+              className="ml-2 bg-transparent outline-none text-base text-white w-full placeholder:text-gray-500"
             />
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function Sidebar() {
         {/* Recent */}
         <div className="mt-8">
 
-          <h3 className="text-xs uppercase text-gray-500 mb-3">
+          <h3 className="text-sm tracking-widest uppercase text-gray-500 mb-3">
             Recent Activity
           </h3>
 
@@ -69,7 +69,7 @@ export default function Sidebar() {
 
         <div className="mt-8">
 
-          <h3 className="text-xs uppercase text-gray-500 mb-3">
+          <h3 className="text-sm tracking-widest uppercase text-gray-500 mb-3">
             Pinned
           </h3>
 
@@ -85,27 +85,27 @@ export default function Sidebar() {
         <div className="mt-8 space-y-2">
 
           <SidebarItem
-            icon={<BookOpen size={18} />}
+            icon={<BookOpen size={20} />}
             title="Knowledge Bases"
           />
 
           <SidebarItem
-            icon={<Bot size={18} />}
+            icon={<Bot size={20} />}
             title="Agents"
           />
 
           <SidebarItem
-            icon={<Database size={18} />}
+            icon={<Database size={20} />}
             title="Models"
           />
 
           <SidebarItem
-            icon={<Puzzle size={18} />}
+            icon={<Puzzle size={20} />}
             title="Integrations"
           />
 
           <SidebarItem
-            icon={<Settings size={18} />}
+            icon={<Settings size={20} />}
             title="Settings"
           />
 
@@ -125,11 +125,11 @@ export default function Sidebar() {
 
           <div>
 
-            <p className="text-white text-sm font-medium">
+            <p className="text-white text-base font-medium">
               Srijan
             </p>
 
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-500 text-sm tracking-widest">
               Local Developer
             </p>
 
@@ -151,7 +151,7 @@ function SidebarItem({
   title: string;
 }) {
   return (
-    <button className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#2A211B] transition text-gray-300 hover:text-white text-sm">
+    <button className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#2A211B] transition text-gray-300 hover:text-white text-base">
       {icon}
       {title}
     </button>

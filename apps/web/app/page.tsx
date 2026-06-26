@@ -6,8 +6,11 @@ import ChatWindow from "../components/chat/ChatWindow";
 import ChatInput from "../components/chat/ChatInput";
 import Hero from "../components/chat/Hero";
 import QuickActions from "../components/chat/QuickActions";
+import { useChat } from "../hooks/useChat";
+import RightSidebar from "../components/layout/RightSidebar";
 
 export default function Home() {
+  const { messages, ask, loading, } = useChat();
   return (
     <main
       style={{
@@ -28,17 +31,26 @@ export default function Home() {
       >
         <Header />
 
-<div className="flex-1 overflow-auto p-10">
 
+<div className="flex-1 overflow-auto">
+  <div className="max-w-6xl mx-auto px-10 pt-20">
+    {messages.length === 0 && (
+  <>
     <Hero />
-
     <QuickActions />
+  </>
+)}
 
-    <ChatWindow />
+    <ChatWindow
+  messages={messages}
+  loading={loading}
+/>
+
+
 
 </div>
-
-<ChatInput />
+</div>
+<ChatInput ask={ask} />
         
 
         
