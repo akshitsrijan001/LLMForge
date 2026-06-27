@@ -14,7 +14,7 @@ import {
 
 export default function Sidebar() {
   return (
-    <aside className="w-[280px] bg-[#171311] border-r border-[#2A211B] flex flex-col justify-between h-screen p-5">
+    <aside className="w-[340px] bg-[#171311] border-r border-[#2A211B] flex flex-col justify-between h-screen p-5">
 
       {/* Top */}
       <div>
@@ -44,7 +44,7 @@ export default function Sidebar() {
         {/* Recent */}
         <div className="mt-8">
 
-          <h3 className="text-sm tracking-widest uppercase text-gray-500 mb-3">
+          <h3 className="text-base tracking-widest uppercase text-gray-500 mb-3">
             Recent Activity
           </h3>
 
@@ -69,7 +69,7 @@ export default function Sidebar() {
 
         <div className="mt-8">
 
-          <h3 className="text-sm tracking-widest uppercase text-gray-500 mb-3">
+          <h3 className="text-base tracking-widest uppercase text-gray-500 mb-3">
             Pinned
           </h3>
 
@@ -129,7 +129,7 @@ export default function Sidebar() {
               Srijan
             </p>
 
-            <p className="text-gray-500 text-sm tracking-widest">
+            <p className="text-gray-500 text-base tracking-widest">
               Local Developer
             </p>
 

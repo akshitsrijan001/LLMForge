@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <div className="text-center py-16">
 
-      <h1 className="text-7xl font-extrabold leading-tight">
+      <h1 className="text-7xl font-extrabold leading-tight tracking-tight">
 
         Forge your{" "}
 
@@ -12,7 +12,7 @@ export default function Hero() {
 
       </h1>
 
-      <p className="mt-6 text-gray-400 max-w-3xl mx-auto text-lg">
+      <p className="mt-8 text-gray-400 max-w-4xl mx-auto text-2xl leading-relaxed">
 
         High-performance AI orchestration for developers,
         researchers and creators.

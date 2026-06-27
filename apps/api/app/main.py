@@ -9,6 +9,21 @@ app = FastAPI(
     title="LLMForge API",
     version="0.1.0",
 )
+import requests
+
+try:
+    requests.post(
+        "http://127.0.0.1:11434/api/generate",
+        json={
+            "model": "llama3.1:8b",
+            "prompt": "",
+            "keep_alive": "30m",
+        },
+        timeout=120,
+    )
+    print("🔥 Llama warmed up.")
+except Exception:
+    print("⚠️ Could not warm Llama.")
 
 app.add_middleware(
     CORSMiddleware,

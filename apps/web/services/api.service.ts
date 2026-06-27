@@ -13,6 +13,10 @@ export async function sendChat(
     body: JSON.stringify(request),
   });
 
+  if (!res.ok) {
+    throw new Error(`HTTP Error ${res.status}`);
+  }
+
   const data = await res.json();
 
   return {

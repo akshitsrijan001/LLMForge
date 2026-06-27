@@ -2,6 +2,7 @@ import { useState } from "react";
 import { sendChat } from "../services/api.service";
 import { Message } from "../types/chat";
 
+
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
@@ -54,3 +55,4 @@ export function useChat() {
     loading,
   };
 }
+

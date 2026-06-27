@@ -22,7 +22,7 @@ export default function ChatWindow({
   }, [messages]);
 
   return (
-    <div className="mt-10 max-w-5xl mx-auto space-y-6">
+    <div className="mt-12 max-w-6xl mx-auto space-y-8 px-4">
 
       {messages.map((message, index) => (
         <MessageBubble
@@ -34,9 +34,9 @@ export default function ChatWindow({
 
       {loading && (
         <div className="flex justify-start">
-          <div className="bg-[#221c18] border border-[#2A211B] rounded-2xl px-5 py-4 text-orange-400 animate-pulse">
-            🤖 LLMForge is thinking...
-          </div>
+          <div className="bg-[#221c18] border border-[#2A211B] rounded-2xl px-7 py-5 text-lg text-orange-400 animate-pulse">
+    🤖 LLMForge is thinking...
+</div>
         </div>
       )}
 

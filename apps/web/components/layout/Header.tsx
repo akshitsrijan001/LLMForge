@@ -4,33 +4,30 @@ import {
   Circle,
   Share2,
   Download,
-  ChevronDown,
 } from "lucide-react";
 
-export default function Header() {
+type HeaderProps = {
+  model: string;
+  setModel: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export default function Header({
+  model,
+  setModel,
+}: HeaderProps) {
   return (
     <header className="h-20 border-b border-[#2A211B] bg-[#171311] flex items-center justify-between px-8">
 
-      {/* Left */}
-
       <div className="flex items-center gap-8">
-
         <div className="flex items-center gap-2">
-
-          <Circle
-            size={10}
-            fill="#22C55E"
-            color="#22C55E"
-          />
+          <Circle size={10} fill="#22C55E" color="#22C55E" />
 
           <span className="text-sm text-green-400 font-medium">
             OLLAMA LIVE
           </span>
-
         </div>
 
         <div>
-
           <p className="text-base text-gray-500 uppercase">
             Session
           </p>
@@ -38,28 +35,28 @@ export default function Header() {
           <p className="text-white font-medium">
             New Forge Engine
           </p>
-
         </div>
-
       </div>
-
-      {/* Right */}
 
       <div className="flex items-center gap-4">
 
-        <button className="flex items-center gap-2 bg-[#221c18] px-5 py-3 rounded-xl hover:bg-[#2A211B] transition">
+        <select
+          value={model}
+          onChange={(e) => setModel(e.target.value)}
+          className="bg-[#221C18] border border-[#2A211B] rounded-xl px-4 py-3 text-white outline-none hover:border-orange-500 transition"
+        >
+          <option value="auto">⚡ Auto</option>
+          <option value="gemma3:1b">⚡ Fast (Gemma 3)</option>
+          <option value="qwen2.5-coder:3b">💻 Coder</option>
+          <option value="phi3:mini">🧠 Reasoning</option>
+          <option value="llama3.1:8b">🚀 Powerful</option>
+        </select>
 
-          <span>Llama 3 (8B)</span>
-
-          <ChevronDown size={22} />
-
-        </button>
-
-        <button className="hover:text-orange-400 transition">
+        <button className="hover:text-orange-400">
           <Share2 size={20} />
         </button>
 
-        <button className="hover:text-orange-400 transition">
+        <button className="hover:text-orange-400">
           <Download size={20} />
         </button>
 
@@ -68,7 +65,6 @@ export default function Header() {
         </div>
 
       </div>
-
     </header>
   );
 }
