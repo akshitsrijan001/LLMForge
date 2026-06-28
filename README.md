@@ -84,8 +84,7 @@ LLMForge provides an intuitive ChatGPT-like interface with intelligent model rou
 
 ## Screenshots
 
-(Add screenshots here)
-
+Coming soon...
 ---
 
 ## License
