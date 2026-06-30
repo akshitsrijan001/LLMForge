@@ -8,7 +8,18 @@ import {
   Trash2,
 } from "lucide-react";
 
+import { useSettings } from "../../hooks/useSettings";
+
 export default function RightSidebar() {
+  const {
+    temperature,
+    setTemperature,
+    topP,
+    setTopP,
+    context,
+    setContext,
+  } = useSettings();
+
   return (
     <aside className="w-[300px] h-screen bg-[#171311] border-l border-[#2A211B] flex flex-col">
 
@@ -30,14 +41,20 @@ export default function RightSidebar() {
         <div>
           <div className="flex justify-between text-sm mb-3">
             <span className="text-gray-400">Temperature</span>
-            <span className="text-orange-400 font-semibold">0.7</span>
+            <span className="text-orange-400 font-semibold">
+              {temperature.toFixed(2)}
+            </span>
           </div>
 
           <input
             type="range"
             min={0}
-            max={100}
-            defaultValue={70}
+            max={1}
+            step={0.01}
+            value={temperature}
+            onChange={(e) =>
+              setTemperature(Number(e.target.value))
+            }
             className="w-full accent-orange-500"
           />
         </div>
@@ -46,14 +63,20 @@ export default function RightSidebar() {
         <div>
           <div className="flex justify-between text-sm mb-3">
             <span className="text-gray-400">Top P</span>
-            <span className="text-orange-400 font-semibold">0.9</span>
+            <span className="text-orange-400 font-semibold">
+              {topP.toFixed(2)}
+            </span>
           </div>
 
           <input
             type="range"
             min={0}
-            max={100}
-            defaultValue={90}
+            max={1}
+            step={0.01}
+            value={topP}
+            onChange={(e) =>
+              setTopP(Number(e.target.value))
+            }
             className="w-full accent-orange-500"
           />
         </div>
@@ -61,37 +84,40 @@ export default function RightSidebar() {
         {/* Context Window */}
         <div>
           <div className="flex justify-between text-sm mb-3">
-            <span className="text-gray-400">Context Window</span>
-            <span className="text-orange-400 font-semibold">8K</span>
+            <span className="text-gray-400">
+              Context Window
+            </span>
+
+            <span className="text-orange-400 font-semibold">
+              {context}
+            </span>
           </div>
 
           <input
             type="range"
-            min={0}
-            max={100}
-            defaultValue={80}
+            min={1024}
+            max={32768}
+            step={1024}
+            value={context}
+            onChange={(e) =>
+              setContext(Number(e.target.value))
+            }
             className="w-full accent-orange-500"
           />
         </div>
 
         {/* Active Resources */}
-
         <div>
-
           <h3 className="text-xs uppercase tracking-[0.18em] text-gray-500 mb-4">
             Active Resources
           </h3>
 
           <Resource name="project_specs.pdf" />
-
           <Resource name="api_docs.pdf" />
-
         </div>
 
         {/* Engine Log */}
-
         <div>
-
           <h3 className="text-xs uppercase tracking-[0.18em] text-gray-500 mb-4">
             Engine Log
           </h3>
@@ -110,25 +136,18 @@ export default function RightSidebar() {
             </div>
 
             <div className="space-y-2 text-sm text-gray-400">
-
               <p>🟢 Ollama Connected</p>
-
               <p>🟢 Llama 3.1 Loaded</p>
-
               <p>🟢 FastAPI Running</p>
-
               <p>🟢 Waiting for prompt...</p>
-
             </div>
 
           </div>
-
         </div>
 
       </div>
 
       {/* Footer */}
-
       <div className="p-6 border-t border-[#2A211B]">
 
         <button className="w-full flex items-center justify-center gap-2 rounded-xl border border-red-500/30 py-3 text-red-400 hover:bg-red-500/10 transition">

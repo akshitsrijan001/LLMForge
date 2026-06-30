@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
@@ -10,11 +10,40 @@ import Hero from "../components/chat/Hero";
 import QuickActions from "../components/chat/QuickActions";
 import RightSidebar from "../components/layout/RightSidebar";
 
+import { useSessions } from "../hooks/useSessions";
 import { useChat } from "../hooks/useChat";
 
 export default function Home() {
+  const {
+    sessions,
+    current,
+    currentId,
+    setCurrentId,
+    newSession,
+    deleteSession,
+    renameSession,
+    saveMessages,
+    togglePin,
+  } = useSessions();
 
-  const { messages, ask, loading } = useChat();
+  const handleMessagesChange = useCallback(
+    (newMessages: any[]) => {
+      if (current) {
+        saveMessages(current.id, newMessages);
+      }
+    },
+    [current, saveMessages]
+  );
+
+  const {
+    messages,
+    ask,
+    stop,
+    loading,
+  } = useChat(
+    current?.messages ?? [],
+    handleMessagesChange
+  );
 
   const [selectedModel, setSelectedModel] = useState("auto");
 
@@ -27,7 +56,15 @@ export default function Home() {
         color: "white",
       }}
     >
-      <Sidebar />
+      <Sidebar
+        sessions={sessions}
+        currentId={currentId}
+        setCurrentId={setCurrentId}
+        newSession={newSession}
+        deleteSession={deleteSession}
+        renameSession={renameSession}
+        togglePin={togglePin}
+      />
 
       <div
         style={{
@@ -41,35 +78,33 @@ export default function Home() {
           setModel={setSelectedModel}
         />
 
-        <div className="flex-1 overflow-auto">
-          <div className="max-w-6xl mx-auto px-10 pt-20">
+        <div className="flex-1 flex flex-col px-10 pt-20">
+          {messages.length === 0 && (
+            <>
+              <Hero />
 
-            {messages.length === 0 && (
-              <>
-                <Hero />
+              <QuickActions
+                onAction={(prompt) =>
+                  ask(prompt, selectedModel)
+                }
+              />
+            </>
+          )}
 
-                <QuickActions
-                  onAction={(prompt) =>
-                    ask(prompt, selectedModel)
-                  }
-                />
-              </>
-            )}
+          
 
-            <ChatWindow
-              messages={messages}
-              loading={loading}
-            />
-
-          </div>
+          <ChatWindow
+            messages={messages}
+            loading={loading}
+          />
         </div>
 
         <ChatInput
           ask={ask}
+          stop={stop}
           loading={loading}
           model={selectedModel}
         />
-
       </div>
 
       <RightSidebar />

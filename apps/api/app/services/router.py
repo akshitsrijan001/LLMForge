@@ -1,38 +1,51 @@
 def choose_model(prompt: str, user_choice: str):
+    """
+    Smart model router.
 
-    # -----------------------------
+    Priority:
+    1. Manual selection
+    2. Greetings / casual chat
+    3. Coding
+    4. Long reasoning
+    5. Writing / summaries
+    6. Default
+    """
+
+    # -----------------------
     # Manual selection
-    # -----------------------------
+    # -----------------------
     if user_choice != "auto":
-        print(f"🧠 Manual Model → {user_choice}")
+        print(f"🧠 Manual -> {user_choice}")
         return user_choice
 
-    prompt = prompt.lower()
+    lower = prompt.lower().strip()
 
-    # -----------------------------
-    # Fast everyday tasks
-    # -----------------------------
-    if any(word in prompt for word in [
-        "summarize",
-        "summary",
-        "translate",
-        "email",
-        "grammar",
-        "rewrite",
-        "improve writing",
-        "explain simply",
-        "short answer",
-        "hello",
+    # -----------------------
+    # Greetings / Casual chat
+    # -----------------------
+    greetings = {
         "hi",
+        "hello",
+        "hey",
+        "yo",
+        "sup",
+        "good morning",
+        "good afternoon",
+        "good evening",
         "thanks",
-    ]):
-        print("⚡ Auto Router → gemma3:1b")
-        return "gemma3:1b"
+        "thank you",
+        "what's up",
+        "whats up",
+    }
 
-    # -----------------------------
-    # Coding & debugging
-    # -----------------------------
-    if any(word in prompt for word in [
+    if lower in greetings:
+        print("🙂 Casual Chat -> llama3.1:8b")
+        return "llama3.1:8b"
+
+    # -----------------------
+    # Coding
+    # -----------------------
+    coding = [
         "python",
         "java",
         "javascript",
@@ -60,19 +73,43 @@ def choose_model(prompt: str, user_choice: str):
         "code",
         "function",
         "class",
-    ]):
-        print("💻 Auto Router → qwen2.5-coder:3b")
+        "cpp",
+        "c++",
+    ]
+
+    if any(word in lower for word in coding):
+        print("💻 Coding -> qwen2.5-coder:3b")
         return "qwen2.5-coder:3b"
 
-    # -----------------------------
-    # Long / complex prompts
-    # -----------------------------
-    if len(prompt) > 1500:
-        print("🚀 Auto Router → llama3.1:8b")
+    # -----------------------
+    # Long reasoning
+    # -----------------------
+    if len(prompt) > 1200:
+        print("🧠 Long Prompt -> llama3.1:8b")
         return "llama3.1:8b"
 
-    # -----------------------------
+    # -----------------------
+    # Writing
+    # -----------------------
+    writing = [
+        "summarize",
+        "summary",
+        "rewrite",
+        "grammar",
+        "email",
+        "essay",
+        "paragraph",
+        "translate",
+        "improve",
+        "explain simply",
+    ]
+
+    if any(word in lower for word in writing):
+        print("✍️ Writing -> gemma3:1b")
+        return "gemma3:1b"
+
+    # -----------------------
     # Default
-    # -----------------------------
-    print("⚡ Auto Router → gemma3:1b")
-    return "gemma3:1b"
+    # -----------------------
+    print("🧠 Default -> llama3.1:8b")
+    return "llama3.1:8b"

@@ -1,159 +1,246 @@
 "use client";
 
+import { useState } from "react";
 import {
   Plus,
   Search,
-  History,
-  Pin,
   BookOpen,
   Bot,
   Database,
   Settings,
   Puzzle,
+  Pin,
+  Trash2,
 } from "lucide-react";
+import { ChatSession } from "../../types/session";
 
-export default function Sidebar() {
+type SidebarProps = {
+  sessions: ChatSession[];
+  currentId: string;
+  setCurrentId: (id: string) => void;
+  newSession: () => void;
+  deleteSession: (id: string) => void;
+  renameSession: (id: string, title: string) => void;
+  togglePin: (id: string) => void;
+};
+
+function formatTime(timestamp: number) {
+  const now = Date.now();
+  const diff = now - timestamp;
+
+  const minute = 60000;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  if (diff < minute) return "Just now";
+
+  if (diff < hour)
+    return `${Math.floor(diff / minute)}m ago`;
+
+  if (diff < day)
+    return `${Math.floor(diff / hour)}h ago`;
+
+  return new Date(timestamp).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  });
+}
+
+export default function Sidebar({
+  sessions,
+  currentId,
+  setCurrentId,
+  newSession,
+  deleteSession,
+  renameSession,
+  togglePin,
+}: SidebarProps) {
+  const [search, setSearch] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState("");
+
+  const filteredSessions = sessions
+    .filter((session) =>
+      session.title.toLowerCase().includes(search.toLowerCase())
+    )
+    .sort((a, b) => Number(b.pinned) - Number(a.pinned));
+
   return (
     <aside className="w-[340px] bg-[#171311] border-r border-[#2A211B] flex flex-col justify-between h-screen p-5">
-
-      {/* Top */}
       <div>
-
-        {/* Logo */}
-        <h1 className="text-3xl font-bold text-white mb-8">
+        <h1 className="mb-8 text-3xl font-bold text-white">
           🚀 LLMForge
         </h1>
 
-        {/* New Session */}
-        <button className="w-full bg-orange-500 hover:bg-orange-400 transition rounded-xl py-4 text-white font-medium flex items-center justify-center gap-2">
-          <Plus size={20} />
-          New Session
+        <button
+          onClick={newSession}
+          className="mb-6 flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-3 font-semibold text-white transition hover:bg-orange-600"
+        >
+          <Plus size={18} />
+          New Chat
         </button>
 
         {/* Search */}
-        <div className="mt-6">
-          <div className="flex items-center bg-[#221c18] rounded-xl px-3 py-2">
-            <Search size={20} className="text-gray-400" />
+        <div className="mb-6">
+          <div className="flex items-center rounded-xl bg-[#221C18] px-3 py-2">
+            <Search size={18} className="text-gray-400" />
             <input
-              placeholder="Search sessions..."
-              className="ml-2 bg-transparent outline-none text-base text-white w-full placeholder:text-gray-500"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search chats..."
+              className="ml-2 w-full bg-transparent text-base text-white outline-none placeholder:text-gray-500"
             />
           </div>
         </div>
 
-        {/* Recent */}
-        <div className="mt-8">
+        <h3 className="mb-3 text-sm uppercase tracking-widest text-gray-500">
+          Recent Chats
+        </h3>
 
-          <h3 className="text-base tracking-widest uppercase text-gray-500 mb-3">
-            Recent Activity
-          </h3>
+        <div className="space-y-2">
+          {filteredSessions.map((session) => (
+            <div
+              key={session.id}
+              onClick={() => setCurrentId(session.id)}
+              className={`group flex items-center justify-between rounded-xl px-3 py-2 cursor-pointer transition ${
+                session.id === currentId
+                  ? "bg-orange-500 text-white"
+                  : "text-gray-300 hover:bg-[#2A211B]"
+              }`}
+            >
+              {editingId === session.id ? (
+                <input
+                  autoFocus
+                  value={editingTitle}
+                  onChange={(e) => setEditingTitle(e.target.value)}
+                  onBlur={() => {
+                    renameSession(session.id, editingTitle);
+                    setEditingId(null);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      renameSession(session.id, editingTitle);
+                      setEditingId(null);
+                    }
 
-          <SidebarItem
-            icon={<History size={16} />}
-            title="UI Design System"
-          />
+                    if (e.key === "Escape") {
+                      setEditingId(null);
+                    }
+                  }}
+                  className="w-full rounded bg-[#2A211B] px-2 py-1 text-sm text-white outline-none"
+                />
+              ) : (
+                <div className="flex flex-1 flex-col overflow-hidden">
 
-          <SidebarItem
-            icon={<History size={16} />}
-            title="Python API Integration"
-          />
+    <span className="truncate text-[15px] font-semibold text-white">
+        {session.title}
+    </span>
 
-          <SidebarItem
-            icon={<History size={16} />}
-            title="Data Pipeline"
-          />
+    <span className="mt-0.5 text-sm font-medium text-orange-300/90">
+        {formatTime(session.updatedAt)}
+    </span>
 
+</div>
+              )}
+
+              <Pin
+              size={15}
+              className={`mr-2 transition ${
+                session.pinned
+                  ? "text-orange-400"
+                  : "text-gray-500 hover:text-orange-400"
+              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePin(session.id);
+              }}
+            />
+
+              <Trash2
+                size={15}
+                className="opacity-0 group-hover:opacity-100 hover:text-red-400 transition"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteSession(session.id);
+                }}
+              />
+            </div>
+          ))}
         </div>
 
-        {/* Pinned */}
-
-        <div className="mt-8">
-
-          <h3 className="text-base tracking-widest uppercase text-gray-500 mb-3">
-            Pinned
-          </h3>
-
+        <div className="mt-10 space-y-2">
           <SidebarItem
-            icon={<Pin size={16} />}
-            title="Model Training Specs"
-          />
-
-        </div>
-
-        {/* Navigation */}
-
-        <div className="mt-8 space-y-2">
-
-          <SidebarItem
-            icon={<BookOpen size={20} />}
+            icon={<BookOpen size={18} />}
             title="Knowledge Bases"
           />
 
           <SidebarItem
-            icon={<Bot size={20} />}
+            icon={<Bot size={18} />}
             title="Agents"
           />
 
           <SidebarItem
-            icon={<Database size={20} />}
+            icon={<Database size={18} />}
             title="Models"
           />
 
           <SidebarItem
-            icon={<Puzzle size={20} />}
+            icon={<Puzzle size={18} />}
             title="Integrations"
           />
 
           <SidebarItem
-            icon={<Settings size={20} />}
+            icon={<Settings size={18} />}
             title="Settings"
           />
-
         </div>
-
       </div>
 
-      {/* Bottom */}
-
       <div className="border-t border-[#2A211B] pt-4">
-
         <div className="flex items-center gap-3">
-
-          <div className="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 font-bold text-white">
             S
           </div>
 
           <div>
-
-            <p className="text-white text-base font-medium">
+            <p className="font-medium text-white">
               Srijan
             </p>
 
-            <p className="text-gray-500 text-base tracking-widest">
+            <p className="text-sm text-gray-500">
               Local Developer
             </p>
-
           </div>
-
         </div>
-
       </div>
-
     </aside>
   );
 }
 
+type SidebarItemProps = {
+  icon?: React.ReactNode;
+  title: string;
+  active?: boolean;
+  onClick?: () => void;
+};
+
 function SidebarItem({
   icon,
   title,
-}: {
-  icon: React.ReactNode;
-  title: string;
-}) {
+  active = false,
+  onClick,
+}: SidebarItemProps) {
   return (
-    <button className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#2A211B] transition text-gray-300 hover:text-white text-base">
+    <button
+      onClick={onClick}
+      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition ${
+        active
+          ? "bg-orange-500 text-white"
+          : "text-gray-300 hover:bg-[#2A211B] hover:text-white"
+      }`}
+    >
       {icon}
-      {title}
+      <span className="truncate">{title}</span>
     </button>
   );
 }

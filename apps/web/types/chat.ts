@@ -1,14 +1,26 @@
-export interface Message {
+export interface UploadedFile {
+  name: string;
+  path?: string;
+  text?: string;
+}
+
+export interface GenerationSettings {
+  temperature: number;
+  topP: number;
+  context: number;
+}
+
+export type Message = {
   role: "user" | "assistant";
   content: string;
-}
+  files?: UploadedFile[];
+  timestamp?: number;
+};
 
 export interface ChatRequest {
   prompt: string;
   model: string;
   history: Message[];
-}
-
-export interface ChatResponse {
-  response: string;
+  files?: UploadedFile[];
+  generation_settings: GenerationSettings;
 }
