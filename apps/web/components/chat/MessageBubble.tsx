@@ -24,7 +24,6 @@ function MessageBubble({
   files = [],
 }: Props) {
   const isUser = role === "user";
-  console.log("BUBBLE CONTENT:", JSON.stringify(content));
 
   const [copied, setCopied] = useState(false);
 

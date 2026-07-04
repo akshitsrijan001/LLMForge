@@ -6,7 +6,7 @@ class Settings(BaseSettings):
 
     OLLAMA_URL: str = "http://localhost:11434"
 
-    DEFAULT_MODEL: str = "llama3.1:8b"
+    DEFAULT_MODEL: str = "gemma3:1b"
 
     class Config:
         env_file = ".env"

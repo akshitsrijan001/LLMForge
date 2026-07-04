@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.services.ollama import chat
 from app.services.router import choose_model
@@ -28,28 +28,42 @@ class GenerationSettings(BaseModel):
 class ChatRequest(BaseModel):
     prompt: str
     model: str = "auto"
-    history: list[Message] = []
-    files: list[UploadedFile] = []
-    generation_settings: GenerationSettings = GenerationSettings()
+
+    history: list[Message] = Field(default_factory=list)
+    files: list[UploadedFile] = Field(default_factory=list)
+
+    knowledge_base: str = "default"
+
+    generation_settings: GenerationSettings = Field(
+        default_factory=GenerationSettings
+    )
 
 
 @router.post("/chat")
 def chat_route(request: ChatRequest):
-    print("✅ USING CHAT.PY")
+
+    print("=" * 70)
+    print("💬 Incoming Chat Request")
+    print("=" * 70)
 
     selected_model = choose_model(
         request.prompt,
         request.model,
     )
 
-    print(f"📌 Frontend requested : {request.model}")
-    print(f"🤖 Using model        : {selected_model}")
+    print("Requested Model :", request.model)
+    print("Selected Model  :", selected_model)
+    print("Knowledge Base  :", request.knowledge_base)
+    print("History Messages:", len(request.history))
+    print("Uploaded Files  :", len(request.files))
+    print("=" * 70)
 
     stream = chat(
         model=selected_model,
         prompt=request.prompt,
         history=[m.model_dump() for m in request.history[-8:]],
         files=[f.model_dump() for f in request.files],
+        knowledge_base=request.knowledge_base,
         generation_settings=request.generation_settings.model_dump(),
     )
 

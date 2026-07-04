@@ -20,5 +20,10 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@ant-design/x": "^2.8.0",
+    "antd": "^6.5.0",
+    "framer-motion": "^12.42.2"
+  }
 }

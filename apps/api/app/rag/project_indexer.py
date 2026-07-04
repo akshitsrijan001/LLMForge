@@ -1,0 +1,119 @@
+import os
+from pathlib import Path
+
+from app.rag.chunker import chunk_text
+from app.rag.chroma_service import add_document
+
+SUPPORTED_EXTENSIONS = {
+    ".py",
+    ".js",
+    ".ts",
+    ".tsx",
+    ".jsx",
+    ".java",
+    ".cpp",
+    ".c",
+    ".go",
+    ".rs",
+    ".md",
+    ".txt",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".toml",
+}
+
+IGNORE_DIRS = {
+    ".git",
+    "__pycache__",
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    ".venv",
+    "venv",
+    "vector_db",
+    ".turbo",
+    ".idea",
+    ".vscode",
+    ".pytest_cache",
+    ".mypy_cache",
+}
+
+MAX_FILE_SIZE = 1024 * 1024  # 1 MB
+
+
+def index_project(
+    project_path: str,
+    knowledge_base: str,
+):
+    """
+    Index an entire source code project into a knowledge base.
+    """
+
+    project = Path(project_path).resolve()
+
+    if not project.exists():
+        return 0
+
+    indexed = 0
+
+    ignore_dirs_lower = {
+        d.lower()
+        for d in IGNORE_DIRS
+    }
+
+    for root, dirs, filenames in os.walk(project):
+
+        root = Path(root)
+
+        dirs[:] = [
+            d
+            for d in dirs
+            if d.lower() not in ignore_dirs_lower
+        ]
+
+        for filename in filenames:
+
+            file = root / filename
+
+            if file.suffix.lower() not in SUPPORTED_EXTENSIONS:
+                continue
+
+            if file.stat().st_size > MAX_FILE_SIZE:
+                continue
+
+            try:
+
+                text = file.read_text(
+                    encoding="utf-8",
+                    errors="ignore",
+                )
+
+                if not text.strip():
+                    continue
+
+                relative = str(
+                    file.relative_to(project)
+                )
+
+                chunks = [
+                    f"""FILE: {relative}
+
+{chunk}
+"""
+                    for chunk in chunk_text(text)
+                ]
+
+                add_document(
+                    document_id=relative,
+                    chunks=chunks,
+                    collection_name=knowledge_base,
+                )
+
+                indexed += 1
+
+            except Exception:
+                continue
+
+    return indexed

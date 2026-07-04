@@ -13,6 +13,9 @@ import {
   Trash2,
 } from "lucide-react";
 import { ChatSession } from "../../types/session";
+import SidebarLogo from "./SidebarLogo";
+import SidebarSearch from "./SidebarSearch";
+import Link from "next/link";
 
 type SidebarProps = {
   sessions: ChatSession[];
@@ -68,9 +71,7 @@ export default function Sidebar({
   return (
     <aside className="w-[340px] bg-[#171311] border-r border-[#2A211B] flex flex-col justify-between h-screen p-5">
       <div>
-        <h1 className="mb-8 text-3xl font-bold text-white">
-          🚀 LLMForge
-        </h1>
+        <SidebarLogo />
 
         <button
           onClick={newSession}
@@ -81,17 +82,10 @@ export default function Sidebar({
         </button>
 
         {/* Search */}
-        <div className="mb-6">
-          <div className="flex items-center rounded-xl bg-[#221C18] px-3 py-2">
-            <Search size={18} className="text-gray-400" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search chats..."
-              className="ml-2 w-full bg-transparent text-base text-white outline-none placeholder:text-gray-500"
-            />
-          </div>
-        </div>
+        <SidebarSearch
+  value={search}
+  onChange={setSearch}
+/>
 
         <h3 className="mb-3 text-sm uppercase tracking-widest text-gray-500">
           Recent Chats
@@ -170,29 +164,28 @@ export default function Sidebar({
 
         <div className="mt-10 space-y-2">
           <SidebarItem
-            icon={<BookOpen size={18} />}
-            title="Knowledge Bases"
-          />
+  icon={<BookOpen size={18} />}
+  title="Knowledge Bases"
+  href="/workspace/knowledge-base"
+/>
 
-          <SidebarItem
-            icon={<Bot size={18} />}
-            title="Agents"
-          />
+<SidebarItem
+  icon={<Database size={18} />}
+  title="Models"
+  href="/workspace/models"
+/>
 
-          <SidebarItem
-            icon={<Database size={18} />}
-            title="Models"
-          />
+<SidebarItem
+  icon={<Bot size={18} />}
+  title="Playground"
+  href="/workspace/playground"
+/>
 
-          <SidebarItem
-            icon={<Puzzle size={18} />}
-            title="Integrations"
-          />
-
-          <SidebarItem
-            icon={<Settings size={18} />}
-            title="Settings"
-          />
+<SidebarItem
+  icon={<Settings size={18} />}
+  title="Settings"
+  href="/workspace/settings"
+/>
         </div>
       </div>
 
@@ -220,27 +213,28 @@ export default function Sidebar({
 type SidebarItemProps = {
   icon?: React.ReactNode;
   title: string;
+  href?: string;
   active?: boolean;
-  onClick?: () => void;
 };
 
 function SidebarItem({
   icon,
   title,
+  href = "#",
   active = false,
-  onClick,
 }: SidebarItemProps) {
   return (
-    <button
-      onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition ${
-        active
-          ? "bg-orange-500 text-white"
-          : "text-gray-300 hover:bg-[#2A211B] hover:text-white"
-      }`}
-    >
-      {icon}
-      <span className="truncate">{title}</span>
-    </button>
+    <Link href={href}>
+      <div
+        className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 transition cursor-pointer ${
+          active
+            ? "bg-orange-500 text-white"
+            : "text-gray-300 hover:bg-[#2A211B] hover:text-white"
+        }`}
+      >
+        {icon}
+        <span className="truncate">{title}</span>
+      </div>
+    </Link>
   );
 }

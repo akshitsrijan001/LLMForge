@@ -23,4 +23,5 @@ export interface ChatRequest {
   history: Message[];
   files?: UploadedFile[];
   generation_settings: GenerationSettings;
+  knowledge_base: string;
 }

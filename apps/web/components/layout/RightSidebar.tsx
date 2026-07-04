@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { useSettings } from "../../hooks/useSettings";
+import { useKnowledgeBase } from "../../hooks/useKnowledgeBase";
 
 export default function RightSidebar() {
   const {
@@ -19,6 +20,11 @@ export default function RightSidebar() {
     context,
     setContext,
   } = useSettings();
+
+const {
+  knowledgeBase,
+  setKnowledgeBase,
+} = useKnowledgeBase();
 
   return (
     <aside className="w-[300px] h-screen bg-[#171311] border-l border-[#2A211B] flex flex-col">
@@ -36,6 +42,34 @@ export default function RightSidebar() {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 space-y-10">
+
+      {/* Knowledge Base */}
+  <div>
+    <h3 className="mb-3 text-sm font-semibold text-gray-400">
+      Knowledge Base
+    </h3>
+
+    <select
+      value={knowledgeBase}
+      onChange={(e) => setKnowledgeBase(e.target.value)}
+      className="
+        w-full
+        rounded-xl
+        border
+        border-[#2A211B]
+        bg-[#221C18]
+        px-3
+        py-2
+        text-white
+      "
+    >
+      <option value="default">Default</option>
+      <option value="college">College</option>
+      <option value="internship">Internship</option>
+      <option value="research">Research</option>
+      <option value="project">Project Docs</option>
+    </select>
+  </div>
 
         {/* Temperature */}
         <div>

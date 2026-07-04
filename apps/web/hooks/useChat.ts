@@ -8,6 +8,7 @@ import {
   UploadedFile,
 } from "../types/chat";
 import { useSettings } from "./useSettings";
+import { useKnowledgeBase } from "./useKnowledgeBase";
 
 export function useChat(
   initialMessages: Message[],
@@ -20,6 +21,7 @@ export function useChat(
 
   const messagesRef = useRef<Message[]>([]);
   const initialized = useRef(false);
+  const { knowledgeBase } = useKnowledgeBase();
 
   useEffect(() => {
     if (initialized.current) return;
@@ -61,18 +63,19 @@ export function useChat(
       setLoading(true);
 
       await sendChat(
-        {
-          prompt,
-          model,
-          history,
-          files,
-          generation_settings: {
-            temperature: settings.temperature,
-            topP: settings.topP,
-            context: settings.context,
-          },
-        },
-        (chunk) => {
+  {
+    prompt,
+    model,
+    history,
+    files,
+    knowledge_base: knowledgeBase,
+    generation_settings: {
+      temperature: settings.temperature,
+      topP: settings.topP,
+      context: settings.context,
+    },
+  },
+  (chunk) => {
           messagesRef.current = messagesRef.current.map((m, i) =>
             i === messagesRef.current.length - 1
               ? {

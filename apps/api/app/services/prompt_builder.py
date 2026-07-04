@@ -42,34 +42,68 @@ When discussing AI:
 - Mention tradeoffs where appropriate.
 """
 
+GREETINGS = {
+    "hi",
+    "hello",
+    "hey",
+    "yo",
+    "sup",
+    "good morning",
+    "good afternoon",
+    "good evening",
+    "thanks",
+    "thank you",
+    "what's up",
+    "whats up",
+}
+
+CODING_KEYWORDS = {
+    "python",
+    "java",
+    "cpp",
+    "c++",
+    "fastapi",
+    "api",
+    "algorithm",
+    "code",
+    "bug",
+    "debug",
+    "fix",
+}
+
+WEB_KEYWORDS = {
+    "react",
+    "next",
+    "tailwind",
+    "frontend",
+    "css",
+    "html",
+    "javascript",
+    "typescript",
+}
+
+AI_KEYWORDS = {
+    "llm",
+    "machine learning",
+    "deep learning",
+    "ai",
+    "neural",
+    "transformer",
+}
+
 
 def build_messages(
     history: List[dict],
     prompt: str,
-    files: List[dict] = [],
+    files: List[dict] | None = None,
 ):
-    system_prompt = BASE_SYSTEM_PROMPT
+    if files is None:
+        files = []
 
     lower = prompt.lower().strip()
 
-    greetings = {
-        "hi",
-        "hello",
-        "hey",
-        "yo",
-        "sup",
-        "good morning",
-        "good afternoon",
-        "good evening",
-        "thanks",
-        "thank you",
-        "what's up",
-        "whats up",
-    }
-
-    # Casual greeting mode
-    if lower in greetings:
-        messages = [
+    if lower in GREETINGS:
+        return [
             {
                 "role": "system",
                 "content": (
@@ -78,67 +112,23 @@ def build_messages(
                     "Do not generate code unless the user asks for it.\n"
                     "Keep greetings short."
                 ),
-            }
-        ]
-
-        messages.extend(history[-8:])
-
-        messages.append(
+            },
+            *history[-8:],
             {
                 "role": "user",
                 "content": prompt,
-            }
-        )
-
-        return messages
-
-    # Coding prompt
-    if any(
-        word in lower
-        for word in [
-            "python",
-            "java",
-            "cpp",
-            "c++",
-            "fastapi",
-            "api",
-            "algorithm",
-            "code",
-            "bug",
-            "debug",
-            "fix",
+            },
         ]
-    ):
+
+    system_prompt = BASE_SYSTEM_PROMPT
+
+    if any(word in lower for word in CODING_KEYWORDS):
         system_prompt += "\n" + CODING_PROMPT
 
-    # Web prompt
-    if any(
-        word in lower
-        for word in [
-            "react",
-            "next",
-            "tailwind",
-            "frontend",
-            "css",
-            "html",
-            "javascript",
-            "typescript",
-        ]
-    ):
+    if any(word in lower for word in WEB_KEYWORDS):
         system_prompt += "\n" + WEB_PROMPT
 
-    # AI prompt
-    if any(
-        word in lower
-        for word in [
-            "llm",
-            "machine learning",
-            "deep learning",
-            "ai",
-            "neural",
-            "transformer",
-        ]
-    ):
+    if any(word in lower for word in AI_KEYWORDS):
         system_prompt += "\n" + AI_PROMPT
 
     messages = [
@@ -150,24 +140,20 @@ def build_messages(
 
     messages.extend(history[-8:])
 
-    # Uploaded documents
     if files:
-        document_context = ""
 
-        for i, file in enumerate(files, start=1):
-            document_context += (
-                f"\n\n===== DOCUMENT {i}: {file['name']} =====\n"
-            )
-            document_context += file["text"]
+        document_context = "\n\n".join(
+            f"===== DOCUMENT {i}: {file['name']} =====\n{file['text']}"
+            for i, file in enumerate(files, start=1)
+        )
 
         messages.append(
             {
                 "role": "system",
-                "content": f"Uploaded Documents:\n{document_context}",
+                "content": f"Uploaded Documents:\n\n{document_context}",
             }
         )
 
-    # IMPORTANT: Always append the user's latest prompt
     messages.append(
         {
             "role": "user",
