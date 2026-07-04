@@ -1,154 +1,81 @@
 # 🚀 LLMForge
 
-> An AI Workspace for Local LLMs featuring DSPy Prompt Optimization, RAG, Knowledge Retrieval, Streaming Chat, and Multi-Model Routing.
-
-![Python](https://img.shields.io/badge/Python-3.12-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)
-![Next.js](https://img.shields.io/badge/Next.js-Frontend-black)
-![Ollama](https://img.shields.io/badge/Ollama-Local%20LLMs-green)
-![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20Store-purple)
-![DSPy](https://img.shields.io/badge/DSPy-Prompt%20Optimization-orange)
-![License](https://img.shields.io/badge/License-MIT-blue)
+> An extensible AI workspace for local LLMs, Retrieval-Augmented Generation (RAG), prompt engineering, and AI agent development.
 
 ---
 
-## 📖 Overview
+## ✨ Overview
 
-LLMForge is a modern AI workspace that allows users to interact with local Large Language Models while augmenting responses using Retrieval-Augmented Generation (RAG), DSPy prompt optimization, semantic document search, and an intuitive chat interface.
+LLMForge is a modern AI development environment designed to simplify building applications with Large Language Models. It combines local model management, knowledge bases, playground experimentation, and configurable AI settings into a single workspace.
 
-Unlike traditional chatbots, LLMForge combines local inference, document intelligence, and prompt optimization into one seamless experience.
+The project emphasizes modularity, developer experience, and offline-first workflows while integrating seamlessly with local inference engines such as Ollama.
 
 ---
 
-# ✨ Features
+# 🌟 Current Features
 
-## 🤖 AI Chat
+## 💬 AI Chat Workspace
 
-- Streaming responses
+- Multi-session conversations
+- Conversation history
 - Markdown rendering
 - Syntax highlighted code blocks
-- Copy message & code support
-- Stop generation
-- Multi-turn conversation
+- File attachments
+- Message persistence
+- Streaming-ready architecture
 
 ---
 
-## 🧠 DSPy Prompt Optimization
+## ⚙️ Settings Workspace
 
-Automatically optimizes technical prompts before sending them to the language model.
+Manage your AI environment through an interactive settings interface.
 
-Supports prompts involving:
+### Core Infrastructure
 
-- Python
-- Java
-- JavaScript
-- TypeScript
-- React
-- Next.js
-- HTML/CSS
-- SQL
-- Algorithms
-- Debugging
-- Software Engineering
+- Ollama Instance URL
+- Embedding Model Selection
+- ChromaDB Storage Path
 
----
+### Configuration
 
-## 📚 Retrieval-Augmented Generation (RAG)
-
-Upload documents and chat with them using semantic search.
-
-Current capabilities include:
-
-- PDF parsing
-- Automatic chunking
-- SentenceTransformer embeddings
-- ChromaDB vector storage
-- Semantic retrieval
-- Context injection into prompts
+- React Context powered settings
+- LocalStorage persistence
+- Automatic settings restoration
+- Responsive dashboard layout
 
 ---
 
-## 📄 Document Support
+## 🧠 Local AI Integration
 
-- PDF Upload
-- Automatic Text Extraction
-- Vector Indexing
-- Semantic Search
-- Multi-turn document conversations
+Designed to support:
 
----
-
-## ⚡ Local LLM Support
-
-Powered entirely by Ollama.
-
-Supports models such as:
-
-- Llama 3.1
-- Gemma 3
-- Mistral
-- DeepSeek
-- Any Ollama-compatible model
+- Ollama
+- Local LLMs
+- Embedding Models
+- ChromaDB
+- FastAPI Backend
 
 ---
 
-## 🔀 Intelligent Model Routing
+## 🏗️ Architecture
 
-Automatically selects the best model depending on the prompt.
+Frontend
 
-Examples:
-
-- Coding → Llama
-- General Chat → Gemma
-- Custom routing supported
-
----
-
-## ⚙️ Adjustable Generation Settings
-
-Real-time controls for:
-
-- Temperature
-- Top-P
-- Context Window
-
----
-
-## 💬 Chat Experience
-
-- Persistent sessions
-- Chat history
-- Rename conversations
-- Delete chats
-- Pin important chats
-- Streaming UI
-
----
-
-# 🏗️ Tech Stack
-
-### Frontend
-
-- Next.js
-- React
-- TypeScript
+- Next.js 16
+- React 19
 - Tailwind CSS
-- React Markdown
-- Lucide Icons
+- TypeScript
 
-### Backend
+Backend
 
 - FastAPI
 - Python
-- Ollama API
-- DSPy
 
-### AI & Retrieval
+AI Stack
 
-- Sentence Transformers
+- Ollama
 - ChromaDB
-- PyPDF
-- Semantic Search
+- DSPy (planned)
 
 ---
 
@@ -156,153 +83,95 @@ Real-time controls for:
 
 ```
 apps/
-
-├── api/
-│   ├── app/
-│   │   ├── chat/
-│   │   ├── rag/
-│   │   ├── services/
-│   │   ├── storage/
-│   │   ├── utils/
-│   │   └── main.py
-│
-└── web/
-    ├── app/
-    ├── components/
-    ├── hooks/
-    ├── services/
-    ├── public/
-    └── styles/
+ ├── web/
+ │   ├── app/
+ │   ├── components/
+ │   ├── hooks/
+ │   ├── services/
+ │   └── types/
+ │
+ └── backend/
+      ├── api/
+      ├── rag/
+      ├── services/
+      └── models/
 ```
 
 ---
 
-# 🚀 Getting Started
+# 🚧 Roadmap
 
-## Clone
+## Completed
 
-```bash
-git clone https://github.com/akshitsrijan001/LLMForge.git
-cd LLMForge
-```
+- ✅ Modern chat interface
+- ✅ Workspace routing
+- ✅ Session management
+- ✅ Settings workspace
+- ✅ React Settings Context
+- ✅ Persistent configuration
+- ✅ Responsive UI foundation
+
+---
+
+## In Progress
+
+- 🔄 Inference Configuration
+- 🔄 Interface Preferences
+- 🔄 Ollama Connection Testing
 
 ---
 
-## Backend
+## Planned
 
-```bash
-cd apps/api
-
-python -m venv .venv
-
-source .venv/bin/activate
-# Windows
-.venv\Scripts\activate
-
-pip install -r requirements.txt
-
-uvicorn app.main:app --reload
-```
+- 📄 Knowledge Base Management
+- 🌐 Website Ingestion
+- 📁 Folder Upload
+- 📚 PDF Processing
+- 🧠 Embedding Generation
+- 🗂️ ChromaDB Integration
+- 🔍 Semantic Search
+- 🤖 Agent Builder
+- 🧪 Playground
+- 📊 Model Benchmarking
+- ⚡ DSPy Optimization
+- 🔌 Plugin System
 
 ---
+
+# 🛠️ Running
 
 ## Frontend
 
 ```bash
 cd apps/web
-
 npm install
-
 npm run dev
 ```
 
----
-
-## Ollama
-
-Install Ollama and pull your preferred models.
-
-Example:
+## Backend
 
 ```bash
-ollama pull llama3.1:8b
-
-ollama pull gemma3:1b
+cd backend
+uvicorn app.main:app --reload
 ```
 
 ---
 
-# 📸 Screenshots
+# 🎯 Vision
 
-Coming soon..
+LLMForge aims to become an all-in-one local AI development platform where developers can:
 
----
+- Build AI applications
+- Manage multiple LLMs
+- Create RAG pipelines
+- Test prompts
+- Benchmark models
+- Develop intelligent agents
 
-# 🛣️ Roadmap
-
-### ✅ Completed
-
-- Streaming Chat
-- Markdown Rendering
-- Syntax Highlighting
-- DSPy Prompt Optimization
-- Multi-Model Routing
-- PDF Upload
-- PDF Parsing
-- ChromaDB Integration
-- Semantic Retrieval
-- RAG Pipeline
-- Session Persistence
-
-### 🚧 In Progress
-
-- Knowledge Bases
-- Source Citations
-- Multi-document Search
-- Agent Framework
-- Workspace Management
-- Antigravity UI Enhancements
-
-### 🔮 Planned
-
-- Web Search
-- Voice Chat
-- Image Understanding
-- Multi-Agent Workflows
-- Plugin System
-- Team Collaboration
-- Cloud Sync
-- Model Benchmark Dashboard
+within one unified workspace.
 
 ---
 
-# 🤝 Contributing
+## 📜 License
 
-Contributions are welcome!
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a Pull Request
-
----
-
-# 📜 License
-
-This project is licensed under the MIT License.
-
----
-
-# 👨‍💻 Author
-
-**Srijan Akshit**
-
-GitHub:
-https://github.com/akshitsrijan001
-
-LinkedIn:
-https://www.linkedin.com/in/srijan-akshit-3b6397374/
-
----
-
-⭐ If you found this project useful, consider giving it a star!
+MIT License
