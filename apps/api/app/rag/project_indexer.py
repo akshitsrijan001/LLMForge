@@ -23,21 +23,46 @@ SUPPORTED_EXTENSIONS = {
     ".toml",
 }
 
+IGNORE_FILES = {
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    "yarn.lock",
+
+    "chroma.sqlite3",
+
+    ".DS_Store",
+}
+
 IGNORE_DIRS = {
     ".git",
+    ".github",
     "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+
+    ".venv",
+    "venv",
+    "env",
+
     "node_modules",
     ".next",
     "dist",
     "build",
-    ".venv",
-    "venv",
+    "coverage",
+
     "vector_db",
-    ".turbo",
+
     ".idea",
     ".vscode",
-    ".pytest_cache",
-    ".mypy_cache",
+
+    "site-packages",
+
+    ".turbo",
+
+    "target",
+    "bin",
+    "obj",
 }
 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
@@ -74,6 +99,8 @@ def index_project(
         ]
 
         for filename in filenames:
+            if filename in IGNORE_FILES:
+                continue
 
             file = root / filename
 

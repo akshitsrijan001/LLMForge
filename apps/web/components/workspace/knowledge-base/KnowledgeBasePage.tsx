@@ -84,10 +84,20 @@ const [selectedKb, setSelectedKb] = useState("");
         </h1>
 
         <p className="text-gray-400 mt-3 mb-8">
-          Create and manage your Retrieval-Augmented Generation knowledge bases.
+          Organize, index and search your projects with Retrieval-Augmented Generation.
         </p>
+        
+
 
         <div className="flex gap-4 mb-10">
+
+  <input
+    placeholder="🔍 Search knowledge bases..."
+    className="w-72 rounded-xl border border-slate-700 bg-[#142338] px-4 py-3 text-white"
+  />
+
+  <div className="flex-1" />
+
           <input
             value={newKb}
             onChange={(e) => setNewKb(e.target.value)}
@@ -103,7 +113,27 @@ const [selectedKb, setSelectedKb] = useState("");
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-5 animate-in fade-in duration-500">
+
+{bases.length === 0 && (
+
+<div className="rounded-2xl border border-dashed border-slate-700 bg-[#111827] p-16 text-center">
+
+<div className="text-6xl mb-4">
+📚
+</div>
+
+<h2 className="text-2xl font-bold">
+No Knowledge Bases Yet
+</h2>
+
+<p className="mt-3 text-gray-400">
+Create a knowledge base and start indexing your projects.
+</p>
+
+</div>
+
+)}
           {bases.map((kb) => (
             <KnowledgeBaseCard
               key={kb.name}

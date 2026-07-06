@@ -23,3 +23,7 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
+vector_db/
+*.sqlite3
+*.bin
+*.pickle

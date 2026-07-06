@@ -8,7 +8,7 @@ export default function KnowledgeBaseSelector() {
 
       <select className="mt-5 w-full rounded-xl bg-[#0B1628] border border-slate-700 px-5 py-4 text-white">
 
-        <option>default</option>
+        
 
       </select>
 
