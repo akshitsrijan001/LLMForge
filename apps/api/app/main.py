@@ -4,7 +4,7 @@ from app.api.health import router as health_router
 from app.api.system import router as system_router
 from app.api.chat import router as chat_router
 from app.api.upload import router as upload_router
-from app.knowledge_base import router as kb_router
+from app.api.knowledge_base import router as kb_router
 
 
 

@@ -10,6 +10,9 @@ import {
 
 import { useSettings } from "../../hooks/useSettings";
 import { useKnowledgeBase } from "../../hooks/useKnowledgeBase";
+import { useEffect, useState } from "react";
+import { getKnowledgeBases } from "../../services/knowledgeBase.service";
+import { useMemo } from "react";
 
 export default function RightSidebar() {
   const {
@@ -25,6 +28,28 @@ const {
   knowledgeBase,
   setKnowledgeBase,
 } = useKnowledgeBase();
+
+const [knowledgeBases, setKnowledgeBases] = useState<
+  {
+    name: string;
+    chunks: number;
+  }[]
+>([]);
+
+const selectedKB = useMemo(() => {
+  return knowledgeBases.find(
+    (kb) => kb.name === knowledgeBase
+  );
+}, [knowledgeBase, knowledgeBases]);
+
+useEffect(() => {
+  async function load() {
+    const data = await getKnowledgeBases();
+    setKnowledgeBases(data);
+  }
+
+  load();
+}, []);
 
   return (
     <aside className="w-[300px] h-screen bg-[#171311] border-l border-[#2A211B] flex flex-col">
@@ -50,25 +75,25 @@ const {
     </h3>
 
     <select
-      value={knowledgeBase}
-      onChange={(e) => setKnowledgeBase(e.target.value)}
-      className="
-        w-full
-        rounded-xl
-        border
-        border-[#2A211B]
-        bg-[#221C18]
-        px-3
-        py-2
-        text-white
-      "
-    >
-      <option value="default">Default</option>
-      <option value="college">College</option>
-      <option value="internship">Internship</option>
-      <option value="research">Research</option>
-      <option value="project">Project Docs</option>
-    </select>
+  value={knowledgeBase}
+  onChange={(e) => setKnowledgeBase(e.target.value)}
+  className="
+    w-full
+    rounded-xl
+    border
+    border-[#2A211B]
+    bg-[#221C18]
+    px-3
+    py-2
+    text-white
+  "
+>
+  {knowledgeBases.map((kb) => (
+    <option key={kb.name} value={kb.name}>
+      {kb.name} ({kb.chunks} chunks)
+    </option>
+  ))}
+</select>
   </div>
 
         {/* Temperature */}
@@ -169,12 +194,29 @@ const {
               </span>
             </div>
 
-            <div className="space-y-2 text-sm text-gray-400">
-              <p>🟢 Ollama Connected</p>
-              <p>🟢 Llama 3.1 Loaded</p>
-              <p>🟢 FastAPI Running</p>
-              <p>🟢 Waiting for prompt...</p>
-            </div>
+            <div className="space-y-3 text-sm">
+
+  <p className="text-green-400">
+    🟢 Ollama Connected
+  </p>
+
+  <p className="text-green-400">
+    🟢 API Online
+  </p>
+
+  <p className="text-orange-400">
+    📚 KB: {knowledgeBase}
+  </p>
+
+  <p className="text-orange-400">
+    🧠 Chunks: {selectedKB?.chunks ?? 0}
+  </p>
+
+  <p className="text-blue-400">
+    ⚡ Forge Ready
+  </p>
+
+</div>
 
           </div>
         </div>

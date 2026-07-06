@@ -40,7 +40,7 @@ IGNORE_DIRS = {
     ".mypy_cache",
 }
 
-MAX_FILE_SIZE = 1024 * 1024  # 1 MB
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
 def index_project(

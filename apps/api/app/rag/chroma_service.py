@@ -47,7 +47,9 @@ def add_document(
         for i in range(len(chunks))
     ]
 
-    existing_ids = set(collection.get()["ids"])
+    existing = collection.get(include=[])
+
+    existing_ids = set(existing["ids"])
 
     new_ids = []
     new_docs = []
@@ -94,7 +96,7 @@ CONTENT:
 def search(
     question_embedding,
     collection_name: str,
-    top_k: int = 8,
+    top_k: int = 6,
 ):
     """
     Search a knowledge base using an embedding.

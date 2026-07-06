@@ -1,26 +1,53 @@
-from fastapi import APIRouter
+from pathlib import Path
 
-from app.rag.knowledge_base import (
-    list_knowledge_bases,
-    create_knowledge_base,
-    delete_knowledge_base,
+import chromadb
+
+# ------------------------------------------------------------
+# Chroma Database
+# ------------------------------------------------------------
+
+BASE_DIR = Path(__file__).resolve().parents[3]
+DB_PATH = BASE_DIR / "vector_db"
+
+print("=" * 70)
+print("📚 KNOWLEDGE BASE PATH:", DB_PATH)
+print("=" * 70)
+
+client = chromadb.PersistentClient(
+    path=str(DB_PATH)
 )
 
-router = APIRouter()
+
+def list_knowledge_bases():
+    collections = client.list_collections()
+
+    result = []
+
+    print("Knowledge Bases:")
+
+    for collection in collections:
+        print(" -", collection.name)
+
+        result.append(
+            {
+                "name": collection.name,
+                "chunks": collection.count(),
+            }
+        )
+
+    return result
 
 
-@router.get("/knowledge-bases")
-def get_kbs():
-    return list_knowledge_bases()
+def create_knowledge_base(name: str):
+    client.get_or_create_collection(name=name)
+    print(f"✅ Created knowledge base: {name}")
 
 
-@router.post("/knowledge-bases/{name}")
-def create(name: str):
-    create_knowledge_base(name)
-    return {"status": "created"}
+def delete_knowledge_base(name: str):
 
+    if name == "default":
+        print("⚠️ Cannot delete default knowledge base.")
+        return
 
-@router.delete("/knowledge-bases/{name}")
-def remove(name: str):
-    delete_knowledge_base(name)
-    return {"status": "deleted"}
+    client.delete_collection(name)
+    print(f"🗑 Deleted knowledge base: {name}")
