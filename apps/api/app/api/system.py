@@ -27,3 +27,23 @@ def system():
         "ollama": connected,
         "models": models,
     }
+@router.get("/dashboard")
+def dashboard():
+
+    models = installed_models()
+
+    from app.knowledge_base import list_knowledge_bases
+
+    kbs = list_knowledge_bases()
+
+    total_chunks = sum(
+        kb["chunks"]
+        for kb in kbs
+    )
+
+    return {
+        "models": len(models.get("models", [])),
+        "knowledge_bases": len(kbs),
+        "chunks": total_chunks,
+        "ollama": check_connection(),
+    }

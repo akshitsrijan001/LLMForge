@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getDashboardStats } from "../../services/dashboard.service";
 import {
   Brain,
   Database,
@@ -44,7 +46,25 @@ const cards = [
   },
 ];
 
+type DashboardStats = {
+  models: number;
+  knowledge_bases: number;
+  chunks: number;
+  ollama: boolean;
+};
+
 export default function WorkspacePage() {
+  const [stats, setStats] = useState<DashboardStats>({
+    models: 0,
+    knowledge_bases: 0,
+    chunks: 0,
+    ollama: false,
+  });
+
+  useEffect(() => {
+    getDashboardStats().then(setStats);
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#0B1020] text-white p-10">
       <div className="mx-auto max-w-7xl">
@@ -53,10 +73,42 @@ export default function WorkspacePage() {
           🚀 LLMForge Workspace
         </h1>
 
-        <p className="mt-4 text-lg text-gray-400 max-w-3xl">
+        <p className="mt-4 max-w-3xl text-lg text-gray-400">
           Your local AI development environment. Build knowledge bases,
           experiment with models, tune settings and prototype AI workflows.
         </p>
+
+        {/* Dashboard Stats */}
+
+        <div className="mt-10 grid gap-6 md:grid-cols-4">
+
+          <StatCard
+            title="Installed Models"
+            value={stats.models}
+            color="text-orange-400"
+          />
+
+          <StatCard
+            title="Knowledge Bases"
+            value={stats.knowledge_bases}
+            color="text-blue-400"
+          />
+
+          <StatCard
+            title="Indexed Chunks"
+            value={stats.chunks}
+            color="text-green-400"
+          />
+
+          <StatCard
+            title="Ollama"
+            value={stats.ollama ? "Connected" : "Offline"}
+            color={stats.ollama ? "text-green-400" : "text-red-400"}
+          />
+
+        </div>
+
+        {/* Navigation Cards */}
 
         <div className="mt-12 grid gap-8 md:grid-cols-2">
 
@@ -104,7 +156,7 @@ export default function WorkspacePage() {
                   {card.title}
                 </h2>
 
-                <p className="mt-4 text-gray-400 leading-7">
+                <p className="mt-4 leading-7 text-gray-400">
                   {card.description}
                 </p>
 
@@ -113,7 +165,32 @@ export default function WorkspacePage() {
           })}
 
         </div>
+
       </div>
     </main>
+  );
+}
+
+function StatCard({
+  title,
+  value,
+  color,
+}: {
+  title: string;
+  value: string | number;
+  color: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-slate-700 bg-[#142338] p-6">
+
+      <div className={`text-3xl font-bold ${color}`}>
+        {value}
+      </div>
+
+      <p className="mt-3 text-gray-400">
+        {title}
+      </p>
+
+    </div>
   );
 }
