@@ -23,7 +23,7 @@ export default function ChatWindow({
 }, [messages, loading]);
 
   return (
-    <div className="flex-1 overflow-y-auto mx-auto w-full max-w-5xl flex flex-col gap-12 px-12 pt-16 pb-40">
+    <div className="flex-1 overflow-y-auto w-full max-w-[1500px] mx-auto flex flex-col gap-12 px-12 pt-16 pb-40">
 
       {messages.map((message, index) => (
   <MessageBubble

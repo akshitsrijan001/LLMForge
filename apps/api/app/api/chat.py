@@ -46,13 +46,17 @@ def chat_route(request: ChatRequest):
     print("💬 Incoming Chat Request")
     print("=" * 70)
 
-    selected_model = choose_model(
+    route = choose_model(
         request.prompt,
         request.model,
     )
 
+    selected_model = route["model"]
+
     print("Requested Model :", request.model)
-    print("Selected Model  :", selected_model)
+    print("Selected Model  :", route["model"])
+    print("Category        :", route["category"])
+    print("Reason          :", route["reason"])
     print("Knowledge Base  :", request.knowledge_base)
     print("History Messages:", len(request.history))
     print("Uploaded Files  :", len(request.files))

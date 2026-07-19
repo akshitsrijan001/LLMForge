@@ -1,69 +1,55 @@
 "use client";
 
-import {
-  Circle,
-  Share2,
-  Download,
-} from "lucide-react";
+import { Circle, Download, MessageSquareText } from "lucide-react";
+import ModelSelector from "../chat/ModelSelector";
 
 type HeaderProps = {
   model: string;
-  setModel: React.Dispatch<React.SetStateAction<string>>;
+  onModelChange: (model: string) => void;
+  models?: string[];
+  sessionTitle?: string;
+  onExport?: () => void;
 };
 
 export default function Header({
   model,
-  setModel,
+  onModelChange,
+  models,
+  sessionTitle = "New conversation",
+  onExport,
 }: HeaderProps) {
   return (
-    <header className="h-20 border-b border-[#2A211B] bg-[#171311] flex items-center justify-between px-8">
-
-      <div className="flex items-center gap-8">
+    <header className="flex min-h-20 items-center justify-between gap-5 border-b border-white/[0.06] bg-black/35 px-5 py-3 backdrop-blur-xl sm:px-8">
+      <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <Circle size={10} fill="#22C55E" color="#22C55E" />
-
-          <span className="text-sm text-green-400 font-medium">
-            OLLAMA LIVE
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-orange-400/20 bg-orange-500/10 text-orange-300">
+            <MessageSquareText size={14} />
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/40">
+            Forge chat
           </span>
         </div>
-
-        <div>
-          <p className="text-base text-gray-500 uppercase">
-            Session
-          </p>
-
-          <p className="text-white font-medium">
-            New Forge Engine
-          </p>
-        </div>
+        <p className="mt-1 truncate text-sm font-medium text-white sm:text-base">
+          {sessionTitle}
+        </p>
       </div>
 
-      <div className="flex items-center gap-4">
-
-        <select
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
-          className="bg-[#221C18] border border-[#2A211B] rounded-xl px-4 py-3 text-white outline-none hover:border-orange-500 transition"
-        >
-          <option value="auto">⚡ Auto</option>
-          <option value="gemma3:1b">⚡ Fast (Gemma 3)</option>
-          <option value="qwen2.5-coder:3b">💻 Coder</option>
-          <option value="phi3:mini">🧠 Reasoning</option>
-          <option value="llama3.1:8b">🚀 Powerful</option>
-        </select>
-
-        <button className="hover:text-orange-400">
-          <Share2 size={20} />
-        </button>
-
-        <button className="hover:text-orange-400">
-          <Download size={20} />
-        </button>
-
-        <div className="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center font-bold">
-          S
+      <div className="flex items-center gap-2 sm:gap-3">
+        <div className="hidden items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-emerald-300 sm:flex">
+          <Circle size={7} fill="currentColor" />
+          Ollama live
         </div>
 
+        <ModelSelector value={model} onChange={onModelChange} models={models} />
+
+        <button
+          type="button"
+          onClick={onExport}
+          title="Export conversation"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white/65 transition hover:border-orange-400/35 hover:bg-orange-400/10 hover:text-orange-300"
+        >
+          <Download size={20} />
+        </button>
       </div>
     </header>
   );

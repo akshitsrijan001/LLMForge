@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 let currentKB = "default";
 const listeners = new Set<(kb: string) => void>();
@@ -7,16 +7,18 @@ export function useKnowledgeBase() {
   const [knowledgeBase, setKnowledgeBaseState] =
     useState(currentKB);
 
-  function setKnowledgeBase(kb: string) {
+  const setKnowledgeBase = useCallback((kb: string) => {
     currentKB = kb;
 
     listeners.forEach((listener) => listener(kb));
-  }
+  }, []);
 
-  useState(() => {
+  useEffect(() => {
     listeners.add(setKnowledgeBaseState);
-    return () => listeners.delete(setKnowledgeBaseState);
-  });
+    return () => {
+      listeners.delete(setKnowledgeBaseState);
+    };
+  }, []);
 
   return {
     knowledgeBase,

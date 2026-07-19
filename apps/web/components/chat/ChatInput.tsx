@@ -29,6 +29,7 @@ type ChatInputProps = {
   loading?: boolean;
 
   model: string;
+  knowledgeBase?: string;
 };
 
 export default function ChatInput({
@@ -36,6 +37,7 @@ export default function ChatInput({
   stop,
   loading = false,
   model,
+  knowledgeBase = "default",
 }: ChatInputProps) {
   const [prompt, setPrompt] = useState("");
   const [files, setFiles] = useState<UploadedFile[]>([]);
@@ -63,7 +65,7 @@ export default function ChatInput({
 
     for (const file of Array.from(selected)) {
       try {
-        const res = await uploadFile(file);
+        const res = await uploadFile(file, knowledgeBase);
 
         uploaded.push({
           name: res.filename,
@@ -81,7 +83,11 @@ export default function ChatInput({
   async function send() {
     if (!prompt.trim() || loading) return;
 
-    await ask(prompt, model, files);
+    await ask(
+  prompt,
+  model,
+  files
+);
 
     setPrompt("");
     setFiles([]);

@@ -16,6 +16,7 @@ import { ChatSession } from "../../types/session";
 import SidebarLogo from "./SidebarLogo";
 import SidebarSearch from "./SidebarSearch";
 import Link from "next/link";
+import { Workflow } from "lucide-react";
 
 type SidebarProps = {
   sessions: ChatSession[];
@@ -179,6 +180,18 @@ export default function Sidebar({
   icon={<Bot size={18} />}
   title="Playground"
   href="/workspace/playground"
+/>
+
+<SidebarItem
+  icon={<BookOpen size={18} />}
+  title="Guide"
+  href="/workspace/guide"
+/>
+
+<SidebarItem
+  icon={<Workflow size={18} />}
+  title="Pipelines"
+  href="/workspace/pipelines"
 />
 
 <SidebarItem

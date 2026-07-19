@@ -69,31 +69,38 @@ async function runPrompt() {
 }
 
 useEffect(() => {
-  async function load() {
-  const data = await getKnowledgeBases();
-
-  setKnowledgeBases(data);
-  const installed = await getInstalledModels();
-  setModels(installed);
-
-  useEffect(() => {
   bottomRef.current?.scrollIntoView({
     behavior: "smooth",
   });
 }, [response]);
 
-if (installed.length > 0) {
-    setModel(installed[0].name);
-}
+useEffect(() => {
+  async function load() {
+    const [basesResult, modelsResult] = await Promise.allSettled([
+      getKnowledgeBases(),
+      getInstalledModels(),
+    ]);
 
-  if (data.length > 0) {
-    setKnowledgeBase(data[0].name);
+    if (basesResult.status === "fulfilled") {
+      const data = basesResult.value;
+      setKnowledgeBases(data);
+
+      if (data.length > 0) {
+        setKnowledgeBase(data[0].name);
+      }
+    }
+
+    if (modelsResult.status === "fulfilled") {
+      const installed = modelsResult.value;
+      setModels(installed);
+
+      if (installed.length > 0) {
+        setModel(installed[0].name);
+      }
+    }
   }
 
-  
-}
-
-  load();
+  void load();
 }, []);
 
   return (

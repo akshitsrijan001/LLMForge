@@ -5,10 +5,11 @@ from app.api.system import router as system_router
 from app.api.chat import router as chat_router
 from app.api.upload import router as upload_router
 from app.api.knowledge_base import router as kb_router
+from app.api.sessions import router as sessions_router
+from app.database import init_database
 
 
-
-
+init_database()
 app = FastAPI(
     title="LLMForge API",
     version="0.1.0",
@@ -42,3 +43,4 @@ app.include_router(system_router)
 app.include_router(chat_router)
 app.include_router(upload_router)
 app.include_router(kb_router)
+app.include_router(sessions_router)

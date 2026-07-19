@@ -1,9 +1,9 @@
 const API_URL = "http://127.0.0.1:8000";
 
-export async function uploadFile(file: File) {
+export async function uploadFile(file: File, knowledgeBase = "default") {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("knowledge_base", "default");
+    formData.append("knowledge_base", knowledgeBase);
 
     const res = await fetch(`${API_URL}/upload`, {
         method: "POST",

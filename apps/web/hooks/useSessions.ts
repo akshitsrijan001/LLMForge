@@ -3,31 +3,56 @@ import { ChatSession } from "../types/session";
 import { Message } from "../types/chat";
 
 const STORAGE_KEY = "llmforge-sessions";
+const ACTIVE_SESSION_KEY = "llmforge-active-session";
 
 export function useSessions() {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [currentId, setCurrentId] = useState("");
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
+  function createEmptySession(): ChatSession {
+    return {
+      id: crypto.randomUUID(),
+      title: "New Chat",
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      messages: [],
+      pinned: false,
+    };
+  }
 
-    if (!saved) {
+  useEffect(() => {
+    const savedSessions = localStorage.getItem(STORAGE_KEY);
+    const savedCurrent = localStorage.getItem(ACTIVE_SESSION_KEY);
+
+    if (!savedSessions) {
       const first = createEmptySession();
 
-      setSessions([first]);
-      setCurrentId(first.id);
+localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify([first])
+);
 
+localStorage.setItem(
+    ACTIVE_SESSION_KEY,
+    first.id
+);
+
+setSessions([first]);
+setCurrentId(first.id);
       return;
     }
 
-    const parsed: ChatSession[] = JSON.parse(saved);
+    const parsed: ChatSession[] = JSON.parse(savedSessions);
 
     setSessions(parsed);
 
-    if (parsed.length > 0) {
-      if (parsed.length > 0) {
-  setCurrentId(parsed[0]!.id);
-}
+    if (
+      savedCurrent &&
+      parsed.some((session) => session.id === savedCurrent)
+    ) {
+      setCurrentId(savedCurrent);
+    } else if (parsed.length > 0) {
+      setCurrentId(parsed[0]!.id);
     }
   }, []);
 
@@ -38,29 +63,14 @@ export function useSessions() {
     );
   }, [sessions]);
 
-  function createEmptySession(): ChatSession {
-    return {
-      id: crypto.randomUUID(),
-      title: "New Chat",
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      messages: [],
-      pinned:false,
-    };
-  }
-
-  function togglePin(id: string) {
-  setSessions(prev =>
-    prev.map(session =>
-      session.id === id
-        ? {
-            ...session,
-            pinned: !session.pinned,
-          }
-        : session
-    )
-  );
-}
+  useEffect(() => {
+    if (currentId) {
+      localStorage.setItem(
+        ACTIVE_SESSION_KEY,
+        currentId
+      );
+    }
+  }, [currentId]);
 
   function newSession() {
     const session = createEmptySession();
@@ -70,65 +80,70 @@ export function useSessions() {
   }
 
   function deleteSession(id: string) {
-    const filtered = sessions.filter((s) => s.id !== id);
+    const filtered = sessions.filter(
+      (session) => session.id !== id
+    );
+
+    if (filtered.length === 0) {
+      const session = createEmptySession();
+
+      setSessions([session]);
+      setCurrentId(session.id);
+      return;
+    }
 
     setSessions(filtered);
 
-    if (filtered.length > 0) {
-      const first = filtered.at(0);
-
-if (first) {
-  setCurrentId(first.id);
-}
+    if (currentId === id) {
+      setCurrentId(filtered[0]!.id);
     }
   }
 
   function renameSession(id: string, title: string) {
     setSessions((prev) =>
-      prev.map((s) =>
-        s.id === id ? { ...s, title } : s
-      )
-    );
-  }
-
-  function updateMessages(messages: Message[]) {
-    setSessions((prev) =>
-      prev.map((s) =>
-        s.id === currentId
+      prev.map((session) =>
+        session.id === id
           ? {
-              ...s,
-              messages,
-              updatedAt: Date.now(),
-              title:
-                s.title === "New Chat" && messages.length > 0
-                  ? (messages[0]?.content ?? "New Chat").slice(0, 35)
-                  : s.title,
+              ...session,
+              title,
             }
-          : s
+          : session
       )
     );
   }
 
-  const current =
-    sessions.find((s) => s.id === currentId) ?? null;
+  function togglePin(id: string) {
+    setSessions((prev) =>
+      prev.map((session) =>
+        session.id === id
+          ? {
+              ...session,
+              pinned: !session.pinned,
+            }
+          : session
+      )
+    );
+  }
 
   function saveMessages(id: string, messages: Message[]) {
-  setSessions((prev) =>
-    prev.map((session) => {
+  console.log("SAVE CALLED", id, messages);
+
+  setSessions((prev) => {
+    console.log("PREV SESSIONS", prev);
+
+    const updated = prev.map((session) => {
       if (session.id !== id) return session;
 
       let title = session.title;
 
       const firstMessage = messages[0];
 
-if (
-  title === "New Chat" &&
-  firstMessage?.role === "user"
-) {
-  title = firstMessage.content
-    .trim()
-    .slice(0, 35);
-}
+      if (
+        title === "New Chat" &&
+        firstMessage?.role === "user"
+      ) {
+        title = firstMessage.content.trim().slice(0, 35);
+      }
 
       return {
         ...session,
@@ -136,9 +151,18 @@ if (
         title,
         updatedAt: Date.now(),
       };
-    })
-  );
+    });
+
+    console.log("UPDATED", updated);
+
+    return updated;
+  });
 }
+
+  const current =
+    sessions.find(
+      (session) => session.id === currentId
+    ) ?? null;
 
   return {
     sessions,
@@ -148,8 +172,7 @@ if (
     newSession,
     deleteSession,
     renameSession,
-    updateMessages,
-    saveMessages,
     togglePin,
+    saveMessages,
   };
 }
