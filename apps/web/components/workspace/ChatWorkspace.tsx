@@ -13,6 +13,9 @@ import { useKnowledgeBase } from "../../hooks/useKnowledgeBase";
 import { useSessions } from "../../hooks/useSessions";
 import { getKnowledgeBases } from "../../services/knowledgeBase.service";
 import { getInstalledModels } from "../../services/system.service";
+import { Message } from "../../types/chat";
+import { getSession } from "../../services/api.service";
+import { shareSession } from "../../services/api.service";
 
 type KnowledgeBase = {
   name: string;
@@ -33,15 +36,12 @@ export default function ChatWorkspace() {
     deleteSession,
     renameSession,
     togglePin,
-    saveMessages,
   } = useSessions();
   const { knowledgeBase, setKnowledgeBase } = useKnowledgeBase();
   const [model, setModel] = useState("auto");
   const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([]);
   const [models, setModels] = useState<string[]>([]);
-  const [messages, setMessages] = useState(
-  current?.messages ?? []
-);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     async function loadWorkspaceData() {
@@ -79,18 +79,44 @@ export default function ChatWorkspace() {
 const [loaded, setLoaded] = useState(false);
 
 useEffect(() => {
-    if (current) {
-        setMessages(current.messages);
-        setLoaded(true);
-    }
-}, [current]);
-
-useEffect(() => {
-    if (!loaded) return;
+  async function loadMessages() {
     if (!currentId) return;
 
-    saveMessages(currentId, messages);
-}, [messages, loaded, currentId]);
+    try {
+      const data = await getSession(currentId);
+
+      setMessages(data.messages ?? []);
+      setLoaded(true);
+    } catch (err) {
+      console.error(err);
+      setMessages([]);
+    }
+  }
+
+  loadMessages();
+}, [currentId]);
+
+//useEffect(() => {
+//    if (!loaded) return;
+//    if (!currentId) return;
+//
+//    saveMessages(currentId, messages);
+//}, [messages, loaded, currentId]);
+
+async function handleShare() {
+  if (!currentId) return;
+
+  try {
+    const data = await shareSession(currentId);
+
+    await navigator.clipboard.writeText(data.url);
+
+    alert("✅ Share link copied to clipboard!");
+  } catch (err) {
+    console.error(err);
+    alert("❌ Failed to generate share link.");
+  }
+}
 
   function exportConversation() {
     if (!current || messages.length === 0) return;
@@ -132,7 +158,7 @@ useEffect(() => {
           onModelChange={setModel}
           models={models}
           sessionTitle={current?.title ?? "New conversation"}
-          onExport={exportConversation}
+          onShare={handleShare}
         />
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.06] bg-black/20 px-5 py-3 sm:px-8">
@@ -190,7 +216,6 @@ useEffect(() => {
     await ask(
       messages,
       setMessages,
-      saveMessages,
       currentId,
       prompt,
       model,

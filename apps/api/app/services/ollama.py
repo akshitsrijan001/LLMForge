@@ -149,30 +149,6 @@ I could not find that information in the indexed knowledge base.
             if text:
                 yield text
 
-        if sources:
-
-            yield "\n\n---\n\n"
-            yield "### Sources\n\n"
-
-            shown = set()
-
-            for source in sources:
-
-                key = (
-                    source["document"],
-                    source["chunk"],
-                )
-
-                if key in shown:
-                    continue
-
-                shown.add(key)
-
-                yield (
-                    f"📄 **{source['document']}** "
-                    f"(Chunk {source['chunk']})\n\n"
-                )
-
     except requests.Timeout:
         yield "⚠️ Ollama request timed out."
 

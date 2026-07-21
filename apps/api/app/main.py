@@ -6,6 +6,8 @@ from app.api.chat import router as chat_router
 from app.api.upload import router as upload_router
 from app.api.knowledge_base import router as kb_router
 from app.api.sessions import router as sessions_router
+from app.routes.search import router as search_router
+
 from app.database import init_database
 
 
@@ -44,3 +46,4 @@ app.include_router(chat_router)
 app.include_router(upload_router)
 app.include_router(kb_router)
 app.include_router(sessions_router)
+app.include_router(search_router)

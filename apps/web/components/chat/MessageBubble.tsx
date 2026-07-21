@@ -18,11 +18,19 @@ type UploadedFile = {
   name: string;
 };
 
+type WebSource = {
+  title: string;
+  link: string;
+};
+
 type Props = {
   role: "user" | "assistant";
   content: string;
   files?: UploadedFile[];
   timestamp?: number;
+
+  images?: string[];
+  sources?: WebSource[];
 };
 
 export default function MessageBubble({
@@ -30,6 +38,8 @@ export default function MessageBubble({
   content,
   files = [],
   timestamp,
+  images = [],
+  sources = [],
 }: Props) {
   const isUser = role === "user";
 
@@ -277,6 +287,25 @@ hover:text-white
               >
                 {content}
               </ReactMarkdown>
+              {!isUser && images.length > 0 && (
+  <div className="mt-8">
+    <h3 className="mb-3 text-sm font-semibold text-orange-300">
+      🖼 Images
+    </h3>
+
+    <div className="flex gap-3 overflow-x-auto pb-2">
+      {images.map((img, index) => (
+        <img
+          key={index}
+          src={img}
+          alt={`Result ${index + 1}`}
+          className="h-32 w-44 rounded-xl border border-[#35291F] object-cover shadow-lg transition hover:scale-105 cursor-pointer"
+          onClick={() => window.open(img, "_blank")}
+        />
+      ))}
+    </div>
+  </div>
+)}
 
               {!isUser && content === "" && (
                 <div className="flex items-center gap-2 py-3">
@@ -302,3 +331,4 @@ hover:text-white
     </motion.div>
   );
 }
+

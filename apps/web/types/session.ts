@@ -5,6 +5,5 @@ export interface ChatSession {
   title: string;
   createdAt: number;
   updatedAt: number;
-  messages: Message[];
   pinned: boolean;
 }

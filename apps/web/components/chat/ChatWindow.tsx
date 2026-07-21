@@ -27,12 +27,14 @@ export default function ChatWindow({
 
       {messages.map((message, index) => (
   <MessageBubble
-    key={index}
-    role={message.role}
-    content={message.content}
-    files={message.files}
-    timestamp={message.timestamp}
-  />
+  key={`${message.role}-${index}`}
+  role={message.role}
+  content={message.content}
+  files={message.files}
+  timestamp={message.timestamp}
+  images={message.images}
+  sources={message.sources}
+/>
 ))}
 
       {

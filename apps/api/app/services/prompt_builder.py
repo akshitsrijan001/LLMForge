@@ -96,6 +96,8 @@ def build_messages(
     history: List[dict],
     prompt: str,
     files: List[dict] | None = None,
+    web_context: str = "",
+    rag_context: str = "",
 ):
     if files is None:
         files = []
@@ -121,6 +123,12 @@ def build_messages(
         ]
 
     system_prompt = BASE_SYSTEM_PROMPT
+
+    if web_context:
+        system_prompt += f"\n\n### Web Search Context\n{web_context}"
+
+    if rag_context:
+        system_prompt += f"\n\n### Knowledge Base Context\n{rag_context}"
 
     if any(word in lower for word in CODING_KEYWORDS):
         system_prompt += "\n" + CODING_PROMPT

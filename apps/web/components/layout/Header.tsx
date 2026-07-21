@@ -1,6 +1,10 @@
 "use client";
 
-import { Circle, Download, MessageSquareText } from "lucide-react";
+import {
+  Circle,
+  Share2,
+  MessageSquareText,
+} from "lucide-react";
 import ModelSelector from "../chat/ModelSelector";
 
 type HeaderProps = {
@@ -8,7 +12,7 @@ type HeaderProps = {
   onModelChange: (model: string) => void;
   models?: string[];
   sessionTitle?: string;
-  onExport?: () => void;
+  onShare?: () => void;
 };
 
 export default function Header({
@@ -16,7 +20,7 @@ export default function Header({
   onModelChange,
   models,
   sessionTitle = "New conversation",
-  onExport,
+  onShare,
 }: HeaderProps) {
   return (
     <header className="flex min-h-20 items-center justify-between gap-5 border-b border-white/[0.06] bg-black/35 px-5 py-3 backdrop-blur-xl sm:px-8">
@@ -43,13 +47,13 @@ export default function Header({
         <ModelSelector value={model} onChange={onModelChange} models={models} />
 
         <button
-          type="button"
-          onClick={onExport}
-          title="Export conversation"
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white/65 transition hover:border-orange-400/35 hover:bg-orange-400/10 hover:text-orange-300"
-        >
-          <Download size={20} />
-        </button>
+  type="button"
+  onClick={onShare}
+  title="Share conversation"
+  className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white/65 transition hover:border-orange-400/35 hover:bg-orange-400/10 hover:text-orange-300"
+>
+  <Share2 size={20} />
+</button>
       </div>
     </header>
   );

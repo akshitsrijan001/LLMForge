@@ -2,10 +2,20 @@
 
 import { useState } from "react";
 import { streamChat } from "@/services/chat.service";
+import { saveMessage } from "@/services/api.service";
+import { searchWeb } from "@/services/search.service";
+
+export interface WebSource {
+  title: string;
+  link: string;
+}
 
 export interface Message {
   role: "user" | "assistant";
   content: string;
+
+  images?: string[];
+  sources?: WebSource[];
 }
 
 export interface UploadedFile {
@@ -20,7 +30,6 @@ export function useForgeChat() {
   async function ask(
     messages: Message[],
     setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
-    saveMessages: (id: string, messages: Message[]) => void,
     sessionId: string,
     prompt: string,
     model = "auto",
@@ -47,20 +56,33 @@ export function useForgeChat() {
         },
       ];
 
-      saveMessages(sessionId, updated);
+
 
       return updated;
     });
 
     setLoading(true);
 
-    try {
+let response = "";
+
+let webContext = "";
+let webImages: string[] = [];
+let webSources: any[] = [];
+
+try {
+
+  const search = await searchWeb(prompt);
+
+  webContext = search.context;
+  webImages = search.images;
+  webSources = search.sources;
       const stream = await streamChat({
         prompt,
         model,
         history,
         files,
         knowledge_base: knowledgeBase,
+        web_context: webContext,
         generation_settings: {
           temperature: 0.4,
           topP: 0.95,
@@ -75,7 +97,7 @@ export function useForgeChat() {
       const reader = stream.getReader();
       const decoder = new TextDecoder();
 
-      let response = "";
+      
 
       while (true) {
         const { done, value } = await reader.read();
@@ -94,8 +116,6 @@ export function useForgeChat() {
             content: response,
           };
 
-          saveMessages(sessionId, updated);
-
           return updated;
         });
       }
@@ -110,11 +130,45 @@ export function useForgeChat() {
           content: "⚠️ Backend unavailable.",
         };
 
-        saveMessages(sessionId, updated);
-
         return updated;
       });
+      setMessages((prev) => {
+  const updated = [...prev];
+
+  updated[updated.length - 1] = {
+    role: "assistant",
+    content: response,
+    images: webImages,
+    sources: webSources,
+  };
+
+  return updated;
+});
     } finally {
+      if (sessionId) {
+    const finalMessages = [
+    ...history,
+    userMessage,
+    {
+        role: "assistant" as const,
+        content: response,
+        images: webImages,
+        sources: webSources,
+    },
+];
+
+    await saveMessage(
+        sessionId,
+        "user",
+        userMessage.content
+    );
+
+    await saveMessage(
+        sessionId,
+        "assistant",
+        response
+    );
+}
       setLoading(false);
     }
   }

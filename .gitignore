@@ -27,3 +27,9 @@ vector_db/
 *.sqlite3
 *.bin
 *.pickle
+*.zip
+structure.txt
+.venv/
+node_modules/
+.next/
+__pycache__/

@@ -1,168 +1,94 @@
 import { useEffect, useState } from "react";
 import { ChatSession } from "../types/session";
-import { Message } from "../types/chat";
-
-const STORAGE_KEY = "llmforge-sessions";
-const ACTIVE_SESSION_KEY = "llmforge-active-session";
+import {
+  createSession as createSessionApi,
+  getSessions,
+  deleteSession as deleteSessionApi,
+} from "../services/api.service";
 
 export function useSessions() {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [currentId, setCurrentId] = useState("");
 
-  function createEmptySession(): ChatSession {
-    return {
-      id: crypto.randomUUID(),
-      title: "New Chat",
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      messages: [],
-      pinned: false,
-    };
-  }
-
   useEffect(() => {
-    const savedSessions = localStorage.getItem(STORAGE_KEY);
-    const savedCurrent = localStorage.getItem(ACTIVE_SESSION_KEY);
+    loadSessions();
+  }, []);
 
-    if (!savedSessions) {
-      const first = createEmptySession();
+  async function loadSessions() {
+    const backendSessions = await getSessions();
 
-localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify([first])
-);
-
-localStorage.setItem(
-    ACTIVE_SESSION_KEY,
-    first.id
-);
-
-setSessions([first]);
-setCurrentId(first.id);
+    if (backendSessions.length === 0) {
+      await newSession();
       return;
     }
 
-    const parsed: ChatSession[] = JSON.parse(savedSessions);
+    const formatted: ChatSession[] = backendSessions.map((s: any) => ({
+      id: s.id,
+      title: s.title,
+      createdAt: new Date(s.created_at).getTime(),
+      updatedAt: new Date(s.updated_at).getTime(),
+      pinned: false,
+    }));
 
-    setSessions(parsed);
+    setSessions(formatted);
+    setCurrentId(formatted[0]?.id ?? "");
+  }
 
-    if (
-      savedCurrent &&
-      parsed.some((session) => session.id === savedCurrent)
-    ) {
-      setCurrentId(savedCurrent);
-    } else if (parsed.length > 0) {
-      setCurrentId(parsed[0]!.id);
-    }
-  }, []);
+  async function newSession() {
+    const created = await createSessionApi();
 
-  useEffect(() => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(sessions)
-    );
-  }, [sessions]);
-
-  useEffect(() => {
-    if (currentId) {
-      localStorage.setItem(
-        ACTIVE_SESSION_KEY,
-        currentId
-      );
-    }
-  }, [currentId]);
-
-  function newSession() {
-    const session = createEmptySession();
+    const session: ChatSession = {
+      id: created.id,
+      title: "New Chat",
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      pinned: false,
+    };
 
     setSessions((prev) => [session, ...prev]);
     setCurrentId(session.id);
   }
 
-  function deleteSession(id: string) {
-    const filtered = sessions.filter(
-      (session) => session.id !== id
-    );
+  async function deleteSession(id: string) {
+    await deleteSessionApi(id);
 
-    if (filtered.length === 0) {
-      const session = createEmptySession();
+    const updated = sessions.filter((s) => s.id !== id);
 
-      setSessions([session]);
-      setCurrentId(session.id);
-      return;
-    }
-
-    setSessions(filtered);
+    setSessions(updated);
 
     if (currentId === id) {
-      setCurrentId(filtered[0]!.id);
+      setCurrentId(updated[0]?.id ?? "");
     }
   }
 
   function renameSession(id: string, title: string) {
     setSessions((prev) =>
-      prev.map((session) =>
-        session.id === id
+      prev.map((s) =>
+        s.id === id
           ? {
-              ...session,
+              ...s,
               title,
             }
-          : session
+          : s
       )
     );
   }
 
   function togglePin(id: string) {
     setSessions((prev) =>
-      prev.map((session) =>
-        session.id === id
+      prev.map((s) =>
+        s.id === id
           ? {
-              ...session,
-              pinned: !session.pinned,
+              ...s,
+              pinned: !s.pinned,
             }
-          : session
+          : s
       )
     );
   }
 
-  function saveMessages(id: string, messages: Message[]) {
-  console.log("SAVE CALLED", id, messages);
-
-  setSessions((prev) => {
-    console.log("PREV SESSIONS", prev);
-
-    const updated = prev.map((session) => {
-      if (session.id !== id) return session;
-
-      let title = session.title;
-
-      const firstMessage = messages[0];
-
-      if (
-        title === "New Chat" &&
-        firstMessage?.role === "user"
-      ) {
-        title = firstMessage.content.trim().slice(0, 35);
-      }
-
-      return {
-        ...session,
-        messages,
-        title,
-        updatedAt: Date.now(),
-      };
-    });
-
-    console.log("UPDATED", updated);
-
-    return updated;
-  });
-}
-
   const current =
-    sessions.find(
-      (session) => session.id === currentId
-    ) ?? null;
+    sessions.find((s) => s.id === currentId) ?? null;
 
   return {
     sessions,
@@ -173,6 +99,5 @@ setCurrentId(first.id);
     deleteSession,
     renameSession,
     togglePin,
-    saveMessages,
   };
 }

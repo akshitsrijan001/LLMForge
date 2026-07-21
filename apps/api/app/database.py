@@ -37,5 +37,17 @@ def init_database():
     )
     """)
 
+    cur.execute("""
+CREATE TABLE IF NOT EXISTS shared_sessions(
+    share_id TEXT PRIMARY KEY,
+    session_id TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+
+    FOREIGN KEY(session_id)
+        REFERENCES sessions(id)
+        ON DELETE CASCADE
+)
+""")
+
     conn.commit()
     conn.close()
