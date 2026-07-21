@@ -1,177 +1,209 @@
 # 🚀 LLMForge
 
-> An extensible AI workspace for local LLMs, Retrieval-Augmented Generation (RAG), prompt engineering, and AI agent development.
+> Build, compare, and enhance AI conversations with local LLMs, web search, and knowledge bases.
+
+LLMForge is an AI workspace that combines local Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), web search, and document-based knowledge retrieval into a single modern interface.
+
+Designed with a ChatGPT/Gemini-inspired experience, LLMForge enables users to chat with multiple models, upload documents, search the web, and build custom knowledge bases.
 
 ---
 
-## ✨ Overview
+## ✨ Features
 
-LLMForge is a modern AI development environment designed to simplify building applications with Large Language Models. It combines local model management, knowledge bases, playground experimentation, and configurable AI settings into a single workspace.
+### 🤖 Multi-Model Chat
+- Support for local Ollama models
+- Easily switch between different LLMs
+- Streaming responses
 
-The project emphasizes modularity, developer experience, and offline-first workflows while integrating seamlessly with local inference engines such as Ollama.
+### 🌐 Intelligent Web Search
+- Live web search integration
+- Intent-aware query routing
+- Trusted source prioritization
+- Rich search context
 
----
+### 📚 Knowledge Bases (RAG)
+- Upload PDFs, TXT, and Markdown files
+- Semantic search using ChromaDB
+- Context-aware document retrieval
+- Multiple knowledge bases
 
-# 🌟 Current Features
-
-## 💬 AI Chat Workspace
-
-- Multi-session conversations
+### 💬 Modern AI Workspace
+- ChatGPT/Gemini-inspired interface
 - Conversation history
-- Markdown rendering
-- Syntax highlighted code blocks
-- File attachments
-- Message persistence
-- Streaming-ready architecture
+- Session management
+- Responsive UI
+
+### ⚡ Developer Friendly
+- FastAPI backend
+- Next.js frontend
+- Modular architecture
+- Easily extendable
 
 ---
 
-## ⚙️ Settings Workspace
+# 🏗️ Tech Stack
 
-Manage your AI environment through an interactive settings interface.
-
-### Core Infrastructure
-
-- Ollama Instance URL
-- Embedding Model Selection
-- ChromaDB Storage Path
-
-### Configuration
-
-- React Context powered settings
-- LocalStorage persistence
-- Automatic settings restoration
-- Responsive dashboard layout
-
----
-
-## 🧠 Local AI Integration
-
-Designed to support:
-
-- Ollama
-- Local LLMs
-- Embedding Models
-- ChromaDB
-- FastAPI Backend
-
----
-
-## 🏗️ Architecture
-
-Frontend
-
-- Next.js 16
-- React 19
-- Tailwind CSS
+## Frontend
+- Next.js
+- React
 - TypeScript
+- Tailwind CSS
 
-Backend
-
+## Backend
 - FastAPI
-- Python
-
-AI Stack
-
 - Ollama
 - ChromaDB
-- DSPy (planned)
+- Sentence Transformers
+
+## AI
+- Local LLMs (Ollama)
+- Retrieval-Augmented Generation (RAG)
+- Semantic Search
+- Prompt Engineering
 
 ---
 
-# 📂 Project Structure
+# 📁 Project Structure
 
 ```
-apps/
- ├── web/
- │   ├── app/
- │   ├── components/
- │   ├── hooks/
- │   ├── services/
- │   └── types/
- │
- └── backend/
-      ├── api/
-      ├── rag/
-      ├── services/
-      └── models/
+LLMForge/
+│
+├── apps/
+│   ├── api/          # FastAPI backend
+│   └── web/          # Next.js frontend
+│
+├── knowledge_bases/
+├── uploads/
+├── vector_db/
+└── README.md
 ```
 
 ---
 
-# 🚧 Roadmap
+# 🚀 Getting Started
 
-## Completed
+## Clone
 
-- ✅ Modern chat interface
-- ✅ Workspace routing
-- ✅ Session management
-- ✅ Settings workspace
-- ✅ React Settings Context
-- ✅ Persistent configuration
-- ✅ Responsive UI foundation
+```bash
+git clone https://github.com/akshitsrijan001/LLMForge.git
+cd LLMForge
+```
 
 ---
 
-## In Progress
+## Backend
 
-- 🔄 Inference Configuration
-- 🔄 Interface Preferences
-- 🔄 Ollama Connection Testing
+```bash
+cd apps/api
 
----
+python -m venv .venv
 
-## Planned
+# Windows
+.venv\Scripts\activate
 
-- 📄 Knowledge Base Management
-- 🌐 Website Ingestion
-- 📁 Folder Upload
-- 📚 PDF Processing
-- 🧠 Embedding Generation
-- 🗂️ ChromaDB Integration
-- 🔍 Semantic Search
-- 🤖 Agent Builder
-- 🧪 Playground
-- 📊 Model Benchmarking
-- ⚡ DSPy Optimization
-- 🔌 Plugin System
+pip install -r requirements.txt
+
+uvicorn app.main:app --reload
+```
+
+Backend runs on:
+
+```
+http://localhost:8000
+```
 
 ---
-
-# 🛠️ Running
 
 ## Frontend
 
 ```bash
 cd apps/web
+
 npm install
+
 npm run dev
 ```
 
-## Backend
+Frontend runs on:
 
-```bash
-cd backend
-uvicorn app.main:app --reload
+```
+http://localhost:3000
 ```
 
 ---
 
-# 🎯 Vision
+# 🧠 How It Works
 
-LLMForge aims to become an all-in-one local AI development platform where developers can:
-
-- Build AI applications
-- Manage multiple LLMs
-- Create RAG pipelines
-- Test prompts
-- Benchmark models
-- Develop intelligent agents
-
-within one unified workspace.
+```
+User
+      │
+      ▼
+Query Classifier
+      │
+      ├──────────────┐
+      ▼              ▼
+Web Search       Knowledge Base
+      │              │
+      └──────┬───────┘
+             ▼
+      Prompt Builder
+             ▼
+         Ollama LLM
+             ▼
+       Streaming Response
+```
 
 ---
 
-## 📜 License
+# 📸 Screenshots
+
+> Add screenshots of:
+- Workspace
+- Chat Interface
+- Knowledge Base
+- Search Results
+
+---
+
+# 🎯 Roadmap
+
+- [x] Local LLM Support
+- [x] Multi-session Chat
+- [x] Knowledge Base (RAG)
+- [x] Web Search
+- [x] Streaming Responses
+- [x] Model Switching
+- [ ] Rich Search Cards
+- [ ] Image Search
+- [ ] Citations
+- [ ] Agent Workflow
+- [ ] Voice Interaction
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Open a Pull Request
+
+---
+
+# 📄 License
 
 MIT License
+
+---
+
+# 👨‍💻 Author
+
+**Srijan Akshit**
+
+- GitHub: https://github.com/akshitsrijan001
+
+---
+
+## ⭐ If you found this project useful, consider giving it a star!
