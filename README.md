@@ -1,80 +1,121 @@
 # 🚀 LLMForge
 
-> Build, compare, and enhance AI conversations with local LLMs, web search, and knowledge bases.
+> A modern AI workspace for running, managing, and augmenting local Large Language Models with Retrieval-Augmented Generation (RAG).
 
-LLMForge is an AI workspace that combines local Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), web search, and document-based knowledge retrieval into a single modern interface.
-
-Designed with a ChatGPT/Gemini-inspired experience, LLMForge enables users to chat with multiple models, upload documents, search the web, and build custom knowledge bases.
+LLMForge is a full-stack AI workspace that provides a clean, developer-focused interface for interacting with local LLMs powered by Ollama. It combines multi-model chat, Retrieval-Augmented Generation (RAG), project indexing, and knowledge base management into a single modern platform inspired by ChatGPT while remaining fully local and privacy-friendly.
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-### 🤖 Multi-Model Chat
-- Support for local Ollama models
-- Easily switch between different LLMs
+## 💬 AI Chat Workspace
+
+- Chat with local LLMs through Ollama
+- Clean ChatGPT-inspired interface
 - Streaming responses
+- Session-based conversations
+- Responsive workspace
 
-### 🌐 Intelligent Web Search
-- Live web search integration
-- Intent-aware query routing
-- Trusted source prioritization
-- Rich search context
+---
 
-### 📚 Knowledge Bases (RAG)
-- Upload PDFs, TXT, and Markdown files
-- Semantic search using ChromaDB
-- Context-aware document retrieval
-- Multiple knowledge bases
+## 🧠 Knowledge Base (RAG)
 
-### 💬 Modern AI Workspace
-- ChatGPT/Gemini-inspired interface
-- Conversation history
-- Session management
-- Responsive UI
+- Create multiple knowledge bases
+- Index local projects into ChromaDB
+- Semantic document retrieval
+- Context-aware AI responses
+- Project folder indexing
 
-### ⚡ Developer Friendly
-- FastAPI backend
-- Next.js frontend
-- Modular architecture
-- Easily extendable
+---
+
+## 🤖 Model Management
+
+- View installed Ollama models
+- Model metadata dashboard
+- One-click model selection
+- Local inference configuration
+
+---
+
+## ⚙️ Workspace Settings
+
+Configure your local AI environment including:
+
+- Ollama server configuration
+- Embedding model selection
+- ChromaDB storage path
+- Inference defaults
+- Workspace preferences
+
+---
+
+## 📖 Interactive Guide
+
+- Built-in onboarding guide
+- Quick start instructions
+- Workspace navigation
+- Configuration help
+
+---
+
+## 🎨 Modern UI
+
+- Premium black & orange theme
+- Glassmorphism-inspired interface
+- Responsive layouts
+- Dashboard analytics
+- Smooth animations with Framer Motion
 
 ---
 
 # 🏗️ Tech Stack
 
 ## Frontend
+
 - Next.js
 - React
 - TypeScript
 - Tailwind CSS
+- Framer Motion
+- Lucide React
 
 ## Backend
+
 - FastAPI
 - Ollama
 - ChromaDB
 - Sentence Transformers
 
 ## AI
-- Local LLMs (Ollama)
+
+- Local LLMs
 - Retrieval-Augmented Generation (RAG)
 - Semantic Search
-- Prompt Engineering
+- Vector Embeddings
 
 ---
 
 # 📁 Project Structure
 
-```
-LLMForge/
+```text
+LLMForge
 │
-├── apps/
-│   ├── api/          # FastAPI backend
-│   └── web/          # Next.js frontend
+├── apps
+│   ├── api
+│   │   ├── routes
+│   │   ├── services
+│   │   └── models
+│   │
+│   └── web
+│       ├── app
+│       ├── components
+│       ├── hooks
+│       ├── services
+│       └── lib
 │
-├── knowledge_bases/
-├── uploads/
-├── vector_db/
+├── uploads
+├── knowledge_bases
+├── vector_db
 └── README.md
 ```
 
@@ -82,16 +123,17 @@ LLMForge/
 
 # 🚀 Getting Started
 
-## Clone
+## Clone Repository
 
 ```bash
 git clone https://github.com/akshitsrijan001/LLMForge.git
+
 cd LLMForge
 ```
 
 ---
 
-## Backend
+## Backend Setup
 
 ```bash
 cd apps/api
@@ -106,7 +148,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Backend runs on:
+Backend
 
 ```
 http://localhost:8000
@@ -114,7 +156,7 @@ http://localhost:8000
 
 ---
 
-## Frontend
+## Frontend Setup
 
 ```bash
 cd apps/web
@@ -124,7 +166,7 @@ npm install
 npm run dev
 ```
 
-Frontend runs on:
+Frontend
 
 ```
 http://localhost:3000
@@ -132,61 +174,73 @@ http://localhost:3000
 
 ---
 
-# 🧠 How It Works
+# 🧠 Architecture
 
-```
-User
-      │
-      ▼
-Query Classifier
-      │
-      ├──────────────┐
-      ▼              ▼
-Web Search       Knowledge Base
-      │              │
-      └──────┬───────┘
+```text
+                User
+                  │
+                  ▼
+        Next.js Frontend
+                  │
+                  ▼
+           FastAPI Backend
+                  │
+      ┌───────────┼───────────┐
+      ▼           ▼           ▼
+   Ollama      ChromaDB    Knowledge Base
+      │           │
+      └──────┬────┘
              ▼
-      Prompt Builder
-             ▼
-         Ollama LLM
-             ▼
-       Streaming Response
+     Streaming Response
 ```
 
 ---
 
 # 📸 Screenshots
 
-> Add screenshots of:
-- Workspace
-- Chat Interface
+Screenshots will be added soon.
+
+Planned previews:
+
+- Dashboard
+- AI Chat
 - Knowledge Base
-- Search Results
+- Models
+- Settings
+- Guide
 
 ---
 
 # 🎯 Roadmap
 
-- [x] Local LLM Support
-- [x] Multi-session Chat
-- [x] Knowledge Base (RAG)
-- [x] Web Search
-- [x] Streaming Responses
-- [x] Model Switching
-- [ ] Rich Search Cards
-- [ ] Image Search
-- [ ] Citations
-- [ ] Agent Workflow
-- [ ] Voice Interaction
+## ✅ Completed
+
+- Local LLM Support
+- Multi-model Workspace
+- RAG Knowledge Bases
+- Project Indexing
+- Model Management
+- Workspace Settings
+- Responsive UI
+
+## 🚧 Planned
+
+- Agent Workflows
+- Pipeline Builder
+- Prompt Templates
+- Telemetry Dashboard
+- Plugin Support
+- MCP Integration
+- Voice Interface
 
 ---
 
 # 🤝 Contributing
 
-Contributions are welcome!
+Contributions, ideas, and feature requests are welcome.
 
 1. Fork the repository
-2. Create your feature branch
+2. Create a new branch
 3. Commit your changes
 4. Open a Pull Request
 
@@ -202,8 +256,8 @@ MIT License
 
 **Srijan Akshit**
 
-- GitHub: https://github.com/akshitsrijan001
+GitHub: https://github.com/akshitsrijan001
 
 ---
 
-## ⭐ If you found this project useful, consider giving it a star!
+## ⭐ If you like LLMForge, consider giving the repository a star!
