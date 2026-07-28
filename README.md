@@ -1,70 +1,72 @@
 # 🚀 LLMForge
 
-> A modern AI workspace for running, managing, and augmenting local Large Language Models with Retrieval-Augmented Generation (RAG).
+> A modern AI workspace for running local Large Language Models with Retrieval-Augmented Generation (RAG), knowledge management, and a premium developer experience.
 
-LLMForge is a full-stack AI workspace that provides a clean, developer-focused interface for interacting with local LLMs powered by Ollama. It combines multi-model chat, Retrieval-Augmented Generation (RAG), project indexing, and knowledge base management into a single modern platform inspired by ChatGPT while remaining fully local and privacy-friendly.
+LLMForge is an AI development workspace built with **Next.js**, **FastAPI**, **Ollama**, and **ChromaDB**. It enables developers to chat with local LLMs, manage knowledge bases, configure AI infrastructure, and build Retrieval-Augmented Generation (RAG) workflows through a clean, modern interface.
 
 ---
 
 # ✨ Features
 
-## 💬 AI Chat Workspace
+## 💬 AI Chat
 
-- Chat with local LLMs through Ollama
-- Clean ChatGPT-inspired interface
-- Streaming responses
-- Session-based conversations
-- Responsive workspace
+- Multi-session chat interface
+- Markdown & code rendering
+- Streaming-ready architecture
+- Conversation history
+- Responsive UI
 
 ---
 
-## 🧠 Knowledge Base (RAG)
+## 🧠 Knowledge Base
 
-- Create multiple knowledge bases
-- Index local projects into ChromaDB
+- Multiple Knowledge Bases
+- Local project indexing
+- ChromaDB vector storage
 - Semantic document retrieval
-- Context-aware AI responses
-- Project folder indexing
+- RAG-ready architecture
 
 ---
 
 ## 🤖 Model Management
 
 - View installed Ollama models
-- Model metadata dashboard
-- One-click model selection
-- Local inference configuration
+- Model information dashboard
+- Local model configuration
 
 ---
 
-## ⚙️ Workspace Settings
+## ⚙️ Settings Workspace
 
-Configure your local AI environment including:
+Configure your local AI environment.
 
-- Ollama server configuration
-- Embedding model selection
-- ChromaDB storage path
-- Inference defaults
-- Workspace preferences
-
----
-
-## 📖 Interactive Guide
-
-- Built-in onboarding guide
-- Quick start instructions
-- Workspace navigation
-- Configuration help
+- Ollama Server URL
+- Embedding Model
+- ChromaDB Storage
+- Inference Settings
+- Persistent configuration
+- LocalStorage support
 
 ---
 
-## 🎨 Modern UI
+## 📖 Workspace Guide
 
-- Premium black & orange theme
-- Glassmorphism-inspired interface
-- Responsive layouts
+Built-in guide for:
+
+- Workspace overview
+- Setup instructions
+- Navigation
+- Getting started
+
+---
+
+## 🎨 UI
+
+- Modern black & orange theme
+- Glassmorphism-inspired design
+- Responsive layout
+- Smooth animations
 - Dashboard analytics
-- Smooth animations with Framer Motion
 
 ---
 
@@ -82,20 +84,14 @@ Configure your local AI environment including:
 ## Backend
 
 - FastAPI
+- Python
 - Ollama
 - ChromaDB
 - Sentence Transformers
 
-## AI
-
-- Local LLMs
-- Retrieval-Augmented Generation (RAG)
-- Semantic Search
-- Vector Embeddings
-
 ---
 
-# 📁 Project Structure
+# 📂 Project Structure
 
 ```text
 LLMForge
@@ -111,11 +107,12 @@ LLMForge
 │       ├── components
 │       ├── hooks
 │       ├── services
-│       └── lib
+│       ├── types
+│       └── public
 │
 ├── uploads
-├── knowledge_bases
 ├── vector_db
+├── knowledge_bases
 └── README.md
 ```
 
@@ -123,7 +120,7 @@ LLMForge
 
 # 🚀 Getting Started
 
-## Clone Repository
+## Clone
 
 ```bash
 git clone https://github.com/akshitsrijan001/LLMForge.git
@@ -133,7 +130,7 @@ cd LLMForge
 
 ---
 
-## Backend Setup
+## Backend
 
 ```bash
 cd apps/api
@@ -148,7 +145,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Backend
+Backend:
 
 ```
 http://localhost:8000
@@ -156,7 +153,7 @@ http://localhost:8000
 
 ---
 
-## Frontend Setup
+## Frontend
 
 ```bash
 cd apps/web
@@ -166,7 +163,7 @@ npm install
 npm run dev
 ```
 
-Frontend
+Frontend:
 
 ```
 http://localhost:3000
@@ -177,33 +174,33 @@ http://localhost:3000
 # 🧠 Architecture
 
 ```text
-                User
-                  │
-                  ▼
-        Next.js Frontend
-                  │
-                  ▼
-           FastAPI Backend
-                  │
-      ┌───────────┼───────────┐
-      ▼           ▼           ▼
-   Ollama      ChromaDB    Knowledge Base
-      │           │
-      └──────┬────┘
-             ▼
-     Streaming Response
+             User
+               │
+               ▼
+      Next.js Frontend
+               │
+               ▼
+       FastAPI Backend
+               │
+      ┌────────┼─────────┐
+      ▼        ▼         ▼
+   Ollama   ChromaDB   Knowledge Base
+      │        │
+      └────┬───┘
+           ▼
+    AI Response
 ```
 
 ---
 
 # 📸 Screenshots
 
-Screenshots will be added soon.
+Screenshots will be added in the next release.
 
-Planned previews:
+Planned screenshots:
 
 - Dashboard
-- AI Chat
+- Chat Workspace
 - Knowledge Base
 - Models
 - Settings
@@ -211,16 +208,16 @@ Planned previews:
 
 ---
 
-# 🎯 Roadmap
+# 🛣️ Roadmap
 
 ## ✅ Completed
 
-- Local LLM Support
-- Multi-model Workspace
-- RAG Knowledge Bases
+- AI Chat Workspace
+- Knowledge Base Management
 - Project Indexing
 - Model Management
-- Workspace Settings
+- Settings Workspace
+- Modern Dashboard
 - Responsive UI
 
 ## 🚧 Planned
@@ -232,17 +229,6 @@ Planned previews:
 - Plugin Support
 - MCP Integration
 - Voice Interface
-
----
-
-# 🤝 Contributing
-
-Contributions, ideas, and feature requests are welcome.
-
-1. Fork the repository
-2. Create a new branch
-3. Commit your changes
-4. Open a Pull Request
 
 ---
 
@@ -260,4 +246,4 @@ GitHub: https://github.com/akshitsrijan001
 
 ---
 
-## ⭐ If you like LLMForge, consider giving the repository a star!
+⭐ If you found this project useful, consider starring the repository.
