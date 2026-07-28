@@ -218,7 +218,8 @@ http://localhost:3000
   <img width="946" height="401" alt="image" src="https://github.com/user-attachments/assets/b3b51bd0-b2d9-4a88-bacd-76f85dfdccea" />
 
 - Playground
-  <img width="900" height="445" alt="image" src="https://github.com/user-attachments/assets/e87b12ba-18b0-4464-a3d6-89e25166e7ee" />
+  <img width="940" height="476" alt="image" src="https://github.com/user-attachments/assets/90a5140d-d814-4474-bf34-4e794efe6ad1" />
+
 
 
 
