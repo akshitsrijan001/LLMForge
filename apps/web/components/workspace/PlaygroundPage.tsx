@@ -104,24 +104,17 @@ useEffect(() => {
 }, []);
 
   return (
-    <main className="min-h-screen bg-[#0B1020] text-white p-10">
+    
 
-      <div className="mx-auto max-w-7xl">
+      <div className="space-y-8">
 
-        <h1 className="text-5xl font-bold text-orange-400">
-          🛝 Playground
-        </h1>
+        
 
-        <p className="mt-4 max-w-3xl text-lg text-gray-400">
-          Experiment with prompts, tune generation parameters and test your
-          local models before deploying them into production.
-        </p>
-
-        <div className="mt-10 grid grid-cols-3 gap-8">
+        <div className="mt-10 grid grid-cols-1 xl:grid-cols-3 gap-8">
 
           {/* Prompt Area */}
 
-          <div className="col-span-2 rounded-2xl border border-slate-700 bg-[#142338] p-6">
+          <div className="col-span-2 rounded-3xl border border-[#35291F] bg-[#221C18] p-7 shadow-xl shadow-black/20">
 
             <h2 className="text-xl font-semibold">
               Prompt
@@ -131,7 +124,7 @@ useEffect(() => {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Ask your model anything..."
-              className="mt-5 h-72 w-full resize-none rounded-xl border border-slate-700 bg-[#0B1628] p-5 outline-none"
+              className="mt-5 h-72 w-full resize-none rounded-xl border border-[#35291F] bg-[#171311] p-5 outline-none focus:border-orange-500 transition"
             />
 
             <div className="mt-6 flex gap-3">
@@ -160,7 +153,7 @@ useEffect(() => {
 
           <div className="space-y-6">
 
-            <div className="rounded-2xl border border-slate-700 bg-[#142338] p-6">
+            <div className="rounded-2xl border border-[#35291F] bg-[#221C18] p-6">
 
               <h3 className="font-semibold">
                 Model
@@ -169,7 +162,7 @@ useEffect(() => {
               <select
               value={model}
               onChange={(e) => setModel(e.target.value)}
-              className="mt-4 w-full rounded-xl border border-slate-700 bg-[#0B1628] p-3"
+              className="mt-4 w-full rounded-xl border border-[#35291F] bg-[#171311] p-3"
             >
               {models.map((m) => (
                 <option key={m.name} value={m.name}>
@@ -180,7 +173,7 @@ useEffect(() => {
 
             </div>
 
-            <div className="rounded-2xl border border-slate-700 bg-[#142338] p-6">
+            <div className="rounded-2xl border border-[#35291F] bg-[#221C18] p-6">
 
               <h3 className="font-semibold">
                 Knowledge Base
@@ -189,7 +182,7 @@ useEffect(() => {
               <select
               value={knowledgeBase}
               onChange={(e) => setKnowledgeBase(e.target.value)}
-              className="mt-4 w-full rounded-xl border border-slate-700 bg-[#0B1628] p-3"
+              className="mt-4 w-full rounded-xl border border-[#35291F] bg-[#171311] p-3"
             >
               {knowledgeBases.map((kb) => (
                 <option key={kb.name} value={kb.name}>
@@ -200,7 +193,7 @@ useEffect(() => {
 
             </div>
 
-            <div className="rounded-2xl border border-slate-700 bg-[#142338] p-6">
+            <div className="rounded-2xl border border-[#35291F] bg-[#221C18] p-6">
 
               <h3 className="font-semibold">
                 Temperature
@@ -224,7 +217,7 @@ useEffect(() => {
 
         {/* Response */}
 
-        <div className="mt-10 rounded-2xl border border-slate-700 bg-[#142338] p-6">
+        <div className="mt-10 rounded-3xl border border-[#35291F] bg-[#221C18] shadow-xl shadow-black/20 p-6">
 
           <h2 className="text-xl font-semibold">
             Response
@@ -240,32 +233,32 @@ useEffect(() => {
         setCopied(false);
       }, 1500);
     }}
-    className="rounded-lg bg-slate-700 px-4 py-2 text-sm hover:bg-slate-600"
+    className="rounded-lg bg-[#2A211B] px-4 py-2 text-sm hover:bg-[#35291F]"
   >
     {copied ? "✅ Copied" : "📋 Copy"}
   </button>
 </div>
 <div className="mb-4 flex flex-wrap gap-3 text-sm">
 
-  <span className="rounded-lg bg-slate-800 px-3 py-2">
+  <span className="rounded-xl shadow-lg bg-[#2A211B] border border-[#35291F] px-3 py-2">
     🤖 {model}
   </span>
 
-  <span className="rounded-lg bg-slate-800 px-3 py-2">
+  <span className="rounded-lg bg-[#2A211B] border border-[#35291F] px-3 py-2">
     📚 {knowledgeBase}
   </span>
 
-  <span className="rounded-lg bg-slate-800 px-3 py-2">
+  <span className="rounded-lg bg-[#2A211B] border border-[#35291F] px-3 py-2">
     ⚡ {responseTime ?? "--"} s
   </span>
 
-  <span className="rounded-lg bg-slate-800 px-3 py-2">
+  <span className="rounded-lg bg-[#2A211B] border border-[#35291F] px-3 py-2">
     🔢 {tokenCount} tokens
   </span>
 
 </div>
 
-          <div className="mt-5 min-h-[300px] rounded-xl border border-slate-700 bg-[#0B1628] p-5 text-gray-400">
+          <div className="mt-5 min-h-[300px] rounded-2xl border border-[#35291F] bg-[#171311] p-5 text-gray-400">
 
             <ReactMarkdown
   remarkPlugins={[remarkGfm]}
@@ -283,7 +276,7 @@ useEffect(() => {
         </SyntaxHighlighter>
       ) : (
         <code
-          className="rounded bg-slate-800 px-1 py-0.5 text-orange-300"
+          className="rounded bg-[#2A211B] border border-[#35291F] px-1 py-0.5 text-orange-300"
           {...props}
         >
           {children}
@@ -298,7 +291,7 @@ useEffect(() => {
 </ReactMarkdown>
 <div ref={bottomRef} />
 {response.includes("Sources:") && (
-  <div className="mt-8 border-t border-slate-700 pt-6">
+  <div className="mt-8 border-t border-[#35291F] pt-6">
 
     <h3 className="mb-4 text-lg font-semibold text-white">
       Sources
@@ -314,7 +307,7 @@ useEffect(() => {
         .map((line, index) => (
           <div
             key={index}
-            className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3"
+            className="flex items-center gap-3 rounded-2xl border border-[#35291F] bg-[#171311] px-4 py-3"
           >
             <FileText className="h-5 w-5 text-orange-400" />
 
@@ -339,6 +332,6 @@ useEffect(() => {
 
       </div>
 
-    </main>
+    
   );
 }

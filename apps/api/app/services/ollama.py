@@ -4,6 +4,7 @@ import traceback
 import requests
 
 from app.core.config import settings
+from app.rag.chroma_service import collection_size
 from app.services.prompt_builder import build_messages
 
 REQUEST_TIMEOUT = (10, 300)
@@ -34,11 +35,19 @@ def installed_models():
 def chat(
     model: str,
     prompt: str,
+    user_query: str,
     history: list,
     files: list | None = None,
     knowledge_base: str = "default",
     generation_settings: dict | None = None,
 ):
+    """
+    Sends a chat request to Ollama.
+
+    RAG retrieval is performed only when the selected knowledge base
+    contains indexed documents.
+    """
+
     if files is None:
         files = []
 
@@ -50,45 +59,40 @@ def chat(
         files=files,
     )
 
-    context = ""
-    sources = []
+    # ----------------------------------------------------------
+    # Retrieval Augmented Generation (RAG)
+    # ----------------------------------------------------------
 
     try:
-        from app.rag.retriever import retrieve
 
-        docs, sources = retrieve(
-            question=prompt,
-            collection_name=knowledge_base,
-        )
+        if collection_size(knowledge_base) > 0:
 
-        if docs:
-            context = "\n\n".join(
-                f"""FILE: {source['document']}
-CHUNK: {source['chunk']}
+            from app.rag.retriever import retrieve
 
-{doc}"""
-                for doc, source in zip(docs, sources)
+            docs, sources = retrieve(
+                question=user_query,
+                collection_name=knowledge_base,
             )
 
-    except Exception:
-        traceback.print_exc()
+            if docs:
 
-    if context:
+                context = "\n\n".join(
+                    f"""FILE: {source["document"]}
+CHUNK: {source["chunk"]}
 
-        rag_prompt = f"""
+{doc}"""
+                    for doc, source in zip(docs, sources)
+                )
+
+                rag_prompt = f"""
 # KNOWLEDGE BASE
 
-The following information was retrieved from the user's indexed project.
+The following information was retrieved from the user's knowledge base.
 
-Answer ONLY using this information.
+Use this information ONLY if it is relevant to the user's question.
 
-Rules:
-
-- Do NOT use outside knowledge.
-- If the answer exists in the context, answer directly.
-- If the answer cannot be found, reply exactly:
-
-I could not find that information in the indexed knowledge base.
+If the retrieved information is unrelated or insufficient,
+ignore it and answer normally using your own knowledge.
 
 ---------------- CONTEXT ----------------
 
@@ -97,17 +101,28 @@ I could not find that information in the indexed knowledge base.
 -----------------------------------------
 """
 
-        messages.insert(
-            1,
-            {
-                "role": "system",
-                "content": rag_prompt,
-            },
-        )
+                messages.insert(
+                    1,
+                    {
+                        "role": "system",
+                        "content": rag_prompt,
+                    },
+                )
+
+    except Exception:
+        traceback.print_exc()
+
+    # ----------------------------------------------------------
+    # Generation Settings
+    # ----------------------------------------------------------
 
     temperature = generation_settings.get("temperature", 0.4)
     top_p = generation_settings.get("topP", 0.95)
     num_ctx = generation_settings.get("context", 4096)
+
+    # ----------------------------------------------------------
+    # Ollama Streaming
+    # ----------------------------------------------------------
 
     try:
 

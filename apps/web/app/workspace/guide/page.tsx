@@ -1,206 +1,256 @@
 import {
+  Activity,
   BookOpen,
+  Boxes,
+  Cpu,
+  Database,
+  FlaskConical,
   LayoutDashboard,
   MessageSquare,
-  Database,
- Boxes,
-  FlaskConical,
-  Activity,
-  Workflow,
   Settings,
-  Cpu,
+  Workflow,
+  ArrowRight,
+  Sparkles,
 } from "lucide-react";
 
-const sections = [
+const modules = [
   {
-    icon: LayoutDashboard,
     title: "Dashboard",
-    desc: "The Dashboard serves as the command center of LLMForge, providing a live overview of your workspace, active models, knowledge bases, telemetry, and recent activity. It helps developers monitor the overall health and productivity of their AI environment at a glance.",
-    features: [
-      "Workspace overview",
-      "Quick actions",
-      "Recent activity",
-      "Telemetry summary",
-    ],
+    icon: LayoutDashboard,
+    color: "text-orange-400",
+    desc: "Monitor your entire AI workspace from a single overview.",
   },
   {
-    icon: MessageSquare,
     title: "Chat",
-    desc: "The Chat module enables seamless conversations with local language models. It supports streaming responses, intelligent model routing, Retrieval-Augmented Generation (RAG), and document-aware conversations for productive AI interactions.",
-    features: [
-      "Streaming responses",
-      "Automatic model routing",
-      "Knowledge Base support",
-      "Conversation export",
-    ],
+    icon: MessageSquare,
+    color: "text-sky-400",
+    desc: "Interact with multiple LLMs, tools and RAG seamlessly.",
   },
   {
-    icon: Database,
     title: "Knowledge Base",
-    desc: "Upload, organize, and manage documents that power Retrieval-Augmented Generation. Knowledge Bases allow your models to answer questions using your own documents instead of relying only on model memory.",
-    features: [
-      "PDF & Markdown upload",
-      "Document indexing",
-      "Chunk management",
-      "Multiple knowledge bases",
-    ],
+    icon: Database,
+    color: "text-green-400",
+    desc: "Build searchable document collections powered by embeddings.",
   },
   {
-    icon: Boxes,
     title: "Models",
-    desc: "Manage every installed language model from one place. View available models, compare capabilities, and switch between them instantly while monitoring their resource usage.",
-    features: [
-      "Installed models",
-      "Context information",
-      "Memory usage",
-      "Model switching",
-    ],
+    icon: Boxes,
+    color: "text-violet-400",
+    desc: "Manage Ollama models and compare capabilities.",
   },
   {
-    icon: FlaskConical,
     title: "Playground",
-    desc: "Experiment with prompts, compare responses from different models, and fine-tune generation parameters before integrating prompts into production workflows.",
-    features: [
-      "Prompt testing",
-      "Model comparison",
-      "Temperature tuning",
-      "Response evaluation",
-    ],
+    icon: FlaskConical,
+    color: "text-pink-400",
+    desc: "Experiment with prompts and compare model outputs.",
   },
   {
-    icon: Activity,
     title: "Telemetry",
-    desc: "Telemetry continuously monitors your local AI environment by displaying CPU, RAM, GPU, VRAM, latency, and overall system health in real time.",
-    features: [
-      "CPU usage",
-      "GPU usage",
-      "RAM monitoring",
-      "Latency tracking",
-    ],
+    icon: Activity,
+    color: "text-red-400",
+    desc: "Track CPU, GPU, RAM, VRAM and inference performance.",
   },
   {
-    icon: Workflow,
     title: "Pipelines",
-    desc: "Pipelines track long-running AI workflows such as document indexing, embedding generation, evaluations, and other background AI tasks.",
-    features: [
-      "Pipeline status",
-      "Progress tracking",
-      "Background jobs",
-      "Execution history",
-    ],
+    icon: Workflow,
+    color: "text-cyan-400",
+    desc: "Monitor indexing and background AI workflows.",
   },
   {
-    icon: Settings,
     title: "Settings",
-    desc: "Customize your LLMForge workspace by configuring default models, API endpoints, appearance, and other application preferences.",
-    features: [
-      "API configuration",
-      "Default model",
-      "Workspace preferences",
-      "Application settings",
-    ],
+    icon: Settings,
+    color: "text-yellow-400",
+    desc: "Configure providers, embeddings and workspace preferences.",
   },
+];
+
+const quickStart = [
+  "Download or select an Ollama model",
+  "Open Chat and start a conversation",
+  "Create a Knowledge Base",
+  "Index your project or documents",
+  "Use Playground for prompt testing",
+  "Monitor performance in Telemetry",
 ];
 
 export default function GuidePage() {
   return (
-    <div className="min-h-screen bg-[#0b0a09] text-white">
-      <div className="mx-auto max-w-7xl px-8 py-14">
+    <div className="space-y-8">
 
-        <div className="mb-14 rounded-3xl border border-orange-500/20 bg-gradient-to-br from-[#1a120d] to-[#0f0d0b] p-10">
-          <div className="flex items-center gap-4">
-            <BookOpen className="h-12 w-12 text-orange-400" />
-            <div>
-              <h1 className="text-5xl font-bold">
-                LLM<span className="text-orange-400">Forge</span>
-              </h1>
-              <p className="mt-3 max-w-4xl text-white/70 leading-8">
-                LLMForge is a privacy-first AI development workspace built for
-                experimenting with multiple Large Language Models, Retrieval
-                Augmented Generation (RAG), prompt engineering, intelligent
-                routing, and local AI workflows. Everything is designed to help
-                developers build, evaluate, and monitor AI applications from one
-                unified interface.
-              </p>
-            </div>
+      {/* Hero */}
+
+      <section className="rounded-3xl border border-[#35291F] bg-[#221C18] p-10 shadow-xl shadow-black/20">
+
+        <div className="flex items-center gap-4">
+
+          <div className="rounded-2xl bg-orange-500/15 p-4">
+            <BookOpen className="h-10 w-10 text-orange-400" />
           </div>
+
+          <div>
+            <h1 className="text-5xl font-bold">
+              Welcome to{" "}
+              <span className="text-orange-400">LLMForge</span>
+            </h1>
+
+            <p className="mt-4 max-w-4xl text-lg leading-8 text-gray-400">
+              LLMForge is an all-in-one local AI workspace for building,
+              testing, and deploying LLM applications. Chat with models,
+              manage knowledge bases, compare prompts, generate images,
+              monitor performance, and orchestrate AI workflows from one
+              unified interface.
+            </p>
+
+          </div>
+
         </div>
 
-        <div className="grid gap-7 md:grid-cols-2">
-          {sections.map((section) => {
-            const Icon = section.icon;
+      </section>
+
+      {/* Stats */}
+
+      <section className="grid gap-6 md:grid-cols-4">
+
+        <div className="rounded-3xl border border-[#35291F] bg-[#221C18] p-6">
+          <p className="text-sm text-gray-400">Modules</p>
+          <h2 className="mt-2 text-3xl font-bold text-orange-400">8</h2>
+        </div>
+
+        <div className="rounded-3xl border border-[#35291F] bg-[#221C18] p-6">
+          <p className="text-sm text-gray-400">Architecture</p>
+          <h2 className="mt-2 text-2xl font-bold text-white">
+            Local First
+          </h2>
+        </div>
+
+        <div className="rounded-3xl border border-[#35291F] bg-[#221C18] p-6">
+          <p className="text-sm text-gray-400">RAG</p>
+          <h2 className="mt-2 text-2xl font-bold text-green-400">
+            Enabled
+          </h2>
+        </div>
+
+        <div className="rounded-3xl border border-[#35291F] bg-[#221C18] p-6">
+          <p className="text-sm text-gray-400">AI Provider</p>
+          <h2 className="mt-2 text-2xl font-bold text-white">
+            Ollama
+          </h2>
+        </div>
+
+      </section>
+
+      {/* Modules */}
+
+      <section>
+
+        <h2 className="mb-6 flex items-center gap-2 text-3xl font-bold">
+          <Sparkles className="text-orange-400" />
+          Workspace Modules
+        </h2>
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+          {modules.map((item) => {
+            const Icon = item.icon;
 
             return (
               <div
-                key={section.title}
-                className="rounded-2xl border border-white/10 bg-[#161311] p-7 hover:border-orange-500/30 transition"
+                key={item.title}
+                className="rounded-3xl border border-[#35291F] bg-[#221C18] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-orange-500 hover:shadow-xl hover:shadow-black/20"
               >
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="rounded-xl bg-orange-500/15 p-3">
-                    <Icon className="text-orange-400" size={24} />
-                  </div>
-
-                  <h2 className="text-2xl font-semibold">
-                    {section.title}
-                  </h2>
+                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#171311]">
+                  <Icon className={`h-7 w-7 ${item.color}`} />
                 </div>
 
-                <p className="text-white/70 leading-7">
-                  {section.desc}
-                </p>
+                <h3 className="text-xl font-semibold text-white">
+                  {item.title}
+                </h3>
 
-                <ul className="mt-6 space-y-2">
-                  {section.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="text-sm text-white/70"
-                    >
-                      • {feature}
-                    </li>
-                  ))}
-                </ul>
+                <p className="mt-3 text-sm leading-7 text-gray-400">
+                  {item.desc}
+                </p>
               </div>
             );
           })}
+
         </div>
 
-        <div className="mt-14 rounded-3xl border border-white/10 bg-[#161311] p-10">
-          <div className="flex items-center gap-3">
-            <Cpu className="text-orange-400" />
-            <h2 className="text-3xl font-semibold">
-              Architecture
-            </h2>
-          </div>
+      </section>
 
-          <div className="mt-8 rounded-xl bg-black/30 p-8 font-mono text-center text-orange-300 leading-9">
-            Next.js Frontend
-            <br />
-            ↓
-            <br />
-            FastAPI Backend
-            <br />
-            ↓
-            <br />
-            Intelligent Router
-            <br />
-            ↓
-            <br />
-            Ollama Runtime
-            <br />
-            ↓
-            <br />
-            Local Language Models
-            <br />
-            ↓
-            <br />
-            Knowledge Bases
-          </div>
+      {/* Architecture */}
+
+      <section className="rounded-3xl border border-[#35291F] bg-[#221C18] p-10 shadow-xl shadow-black/20">
+
+        <div className="mb-8 flex items-center gap-3">
+          <Cpu className="text-orange-400" />
+          <h2 className="text-3xl font-bold">
+            LLMForge Architecture
+          </h2>
         </div>
 
-        <div className="mt-10 text-center text-sm text-white/40">
-          LLMForge v1.0 • Built with Next.js, FastAPI & Ollama
+        <div className="grid gap-4 text-center md:grid-cols-7">
+
+          {[
+            "Next.js",
+            "FastAPI",
+            "Planner",
+            "Tool Router",
+            "Ollama",
+            "ComfyUI",
+            "RAG",
+          ].map((step, i) => (
+            <div
+              key={step}
+              className="flex items-center justify-center gap-3"
+            >
+              <div className="rounded-2xl border border-[#35291F] bg-[#171311] px-5 py-5 font-semibold">
+                {step}
+              </div>
+
+              {i !== 6 && (
+                <ArrowRight className="hidden text-orange-400 md:block" />
+              )}
+            </div>
+          ))}
+
         </div>
+
+      </section>
+
+      {/* Quick Start */}
+
+      <section className="rounded-3xl border border-[#35291F] bg-[#221C18] p-10 shadow-xl shadow-black/20">
+
+        <h2 className="text-3xl font-bold">
+          Quick Start
+        </h2>
+
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+
+          {quickStart.map((step, index) => (
+            <div
+              key={step}
+              className="flex items-center gap-4 rounded-2xl border border-[#35291F] bg-[#171311] p-5"
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 font-bold text-black">
+                {index + 1}
+              </div>
+
+              <p className="text-gray-300">
+                {step}
+              </p>
+
+            </div>
+          ))}
+
+        </div>
+
+      </section>
+
+      <div className="pb-6 text-center text-sm text-gray-500">
+        LLMForge v1.0 • Local AI Workspace powered by Next.js, FastAPI & Ollama
       </div>
+
     </div>
   );
 }

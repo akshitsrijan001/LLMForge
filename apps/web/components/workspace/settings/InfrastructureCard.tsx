@@ -3,7 +3,6 @@
 import { useSettings } from "../../../hooks/useSettings";
 
 export default function InfrastructureCard() {
-
   const {
     ollamaUrl,
     embeddingModel,
@@ -14,68 +13,83 @@ export default function InfrastructureCard() {
   } = useSettings();
 
   return (
-    <section>
-      <h2 className="text-orange-400 uppercase tracking-[0.35em] text-base font-semibold mb-6">
-        Core Infrastructure
-      </h2>
+    <section className="rounded-[28px] border border-white/[0.06] bg-white/[0.025] p-8 shadow-2xl shadow-black/20">
 
-      <div className="rounded-2xl border border-slate-700 bg-[#142338] p-10 shadow-xl">
+      <div className="mb-8">
 
-        <div className="grid grid-cols-2 gap-10">
+        <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.28em] text-orange-300/70">
+          Infrastructure
+        </p>
 
-          <div>
-            <label className="block text-sm uppercase tracking-[0.2em] text-gray-400 mb-3">
-              Ollama Instance URL
-            </label>
+        <h2 className="text-2xl font-bold text-white">
+          Core Infrastructure
+        </h2>
 
-            <input
-              value={ollamaUrl}
-              onChange={(e) => setOllamaUrl(e.target.value)}
-              className="w-full h-14 rounded-xl bg-[#0B1628] border border-[#263248] px-5 text-base text-white outline-none transition focus:border-orange-400"
-            />
-          </div>
+        <p className="mt-2 text-white/45">
+          Configure your local inference server and vector database.
+        </p>
 
-          <div>
-            <label className="block text-sm uppercase tracking-[0.2em] text-gray-400 mb-3">
-              Active Embedding Model
-            </label>
+      </div>
 
-            <select
-              value={embeddingModel}
-              onChange={(e) => setEmbeddingModel(e.target.value)}
-              className="w-full h-14 rounded-xl bg-[#0B1628] border border-[#263248] px-5 text-base text-white outline-none transition focus:border-orange-400"
-            >
-              <option value="nomic-embed-text:latest">
-                nomic-embed-text:latest
-              </option>
+      <div className="grid gap-8 lg:grid-cols-2">
 
-              <option value="bge-large">
-                bge-large
-              </option>
+        <div>
 
-              <option value="all-minilm">
-                all-minilm
-              </option>
-            </select>
-          </div>
-
-        </div>
-
-        <div className="mt-10">
-
-          <label className="block text-sm uppercase tracking-[0.2em] text-gray-400 mb-3">
-            ChromaDB Persistent Path
+          <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
+            Ollama Instance URL
           </label>
 
           <input
-            value={chromaPath}
-            onChange={(e) => setChromaPath(e.target.value)}
-            className="w-full h-14 rounded-xl bg-[#0B1628] border border-[#263248] px-5 text-base text-white outline-none transition focus:border-orange-400"
+            value={ollamaUrl}
+            onChange={(e) => setOllamaUrl(e.target.value)}
+            className="h-12 w-full rounded-xl border border-white/10 bg-[#12100e] px-4 text-white outline-none transition focus:border-orange-500"
           />
 
         </div>
 
+        <div>
+
+          <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
+            Embedding Model
+          </label>
+
+          <select
+            value={embeddingModel}
+            onChange={(e) => setEmbeddingModel(e.target.value)}
+            className="h-12 w-full rounded-xl border border-white/10 bg-[#12100e] px-4 text-white outline-none transition focus:border-orange-500"
+          >
+            <option value="nomic-embed-text:latest">
+              nomic-embed-text:latest
+            </option>
+
+            <option value="bge-large">
+              bge-large
+            </option>
+
+            <option value="all-minilm">
+              all-minilm
+            </option>
+
+          </select>
+
+        </div>
+
       </div>
+
+      <div className="mt-8">
+
+        <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
+          ChromaDB Storage Path
+        </label>
+
+        <input
+          value={chromaPath}
+          onChange={(e) => setChromaPath(e.target.value)}
+          className="h-12 w-full rounded-xl border border-white/10 bg-[#12100e] px-4 text-white outline-none transition focus:border-orange-500"
+        />
+
+      </div>
+
     </section>
   );
 }

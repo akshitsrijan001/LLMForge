@@ -1,0 +1,10 @@
+from app.rag.chroma_service import get_collection
+
+collection = get_collection("default")
+
+print("Chunks:", collection.count())
+
+data = collection.get(limit=20)
+
+for meta in data["metadatas"]:
+    print(meta)

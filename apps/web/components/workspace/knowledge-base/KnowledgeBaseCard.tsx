@@ -12,59 +12,105 @@ export default function KnowledgeBaseCard({
   onIndex,
 }: Props) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-slate-700 bg-[#142338] p-6 transition-all duration-200 hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/10">
+    <div className="group flex flex-col gap-6 rounded-3xl border border-[#35291F] bg-[#221C18] p-7 shadow-xl shadow-black/20 transition-all duration-300 hover:-translate-y-1 hover:border-orange-500">
 
-      <div>
+      <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-start gap-4">
 
-          <span className="text-2xl">
-            📁
-          </span>
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#171311] text-3xl border border-[#35291F]">
+            📚
+          </div>
 
           <div>
 
-            <h3 className="text-xl font-semibold text-white">
+            <h2 className="text-2xl font-bold text-white">
               {name}
-            </h3>
+            </h2>
 
-            <p className="mt-1 text-sm text-gray-400">
+            <p className="mt-2 text-gray-400">
               {chunks.toLocaleString()} indexed chunks
             </p>
+
+            <div className="mt-5 flex flex-wrap gap-3">
+
+              <span className="rounded-full border border-green-700 bg-green-900/20 px-3 py-1 text-xs font-medium text-green-400">
+                ✓ Ready
+              </span>
+
+              <span className="rounded-full border border-orange-700 bg-orange-900/20 px-3 py-1 text-xs font-medium text-orange-400">
+                RAG Enabled
+              </span>
+
+            </div>
 
           </div>
 
         </div>
 
-        <div className="mt-4 flex gap-2">
+        <div className="flex gap-3">
 
-          <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs font-medium text-green-400">
-            ✅ Ready
-          </span>
+          <button
+            onClick={onIndex}
+            className="rounded-2xl bg-orange-500 px-5 py-3 font-semibold text-black transition hover:bg-orange-400"
+          >
+            Index Project
+          </button>
 
-          <span className="rounded-full bg-orange-500/20 px-3 py-1 text-xs font-medium text-orange-400">
-            🧠 RAG Enabled
-          </span>
+          <button
+            onClick={onDelete}
+            className="rounded-2xl border border-red-500 bg-red-500/10 px-5 py-3 font-semibold text-red-400 transition hover:bg-red-500 hover:text-white"
+          >
+            Delete
+          </button>
 
         </div>
 
       </div>
 
-      <div className="flex gap-3">
+      <div className="h-px bg-[#35291F]" />
 
-        <button
-          onClick={onIndex}
-          className="rounded-xl bg-orange-500 px-5 py-2 font-semibold text-black transition-all duration-200 hover:scale-105 hover:bg-orange-400"
-        >
-          Index Project
-        </button>
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
 
-        <button
-          onClick={onDelete}
-          className="rounded-xl bg-red-500 px-5 py-2 font-semibold text-white transition-all duration-200 hover:scale-105 hover:bg-red-400"
-        >
-          Delete
-        </button>
+        <div className="rounded-2xl border border-[#35291F] bg-[#171311] p-4">
+          <p className="text-xs uppercase tracking-wider text-gray-500">
+            Chunks
+          </p>
+
+          <p className="mt-2 text-lg font-semibold text-white">
+            {chunks.toLocaleString()}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-[#35291F] bg-[#171311] p-4">
+          <p className="text-xs uppercase tracking-wider text-gray-500">
+            Status
+          </p>
+
+          <p className="mt-2 text-lg font-semibold text-green-400">
+            Ready
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-[#35291F] bg-[#171311] p-4">
+          <p className="text-xs uppercase tracking-wider text-gray-500">
+            Search
+          </p>
+
+          <p className="mt-2 text-lg font-semibold text-orange-400">
+            Enabled
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-[#35291F] bg-[#171311] p-4">
+          <p className="text-xs uppercase tracking-wider text-gray-500">
+            Type
+          </p>
+
+          <p className="mt-2 text-lg font-semibold text-white">
+            Local
+          </p>
+        </div>
 
       </div>
 

@@ -158,8 +158,8 @@ return (
             e.currentTarget.style.height =
               e.currentTarget.scrollHeight + "px";
           }}
-          placeholder="Message LLMForge..."
-          className="max-h-48 flex-1 resize-none overflow-y-auto bg-transparent text-lg text-white outline-none placeholder:text-gray-500"
+          placeholder="Ask anything... Generate images, search the web, or chat with your local AI."
+          className="max-h-52 min-h-[34px] flex-1 resize-none overflow-y-auto bg-transparent text-[16px] leading-7 text-white outline-none placeholder:text-gray-500"
         />
 
         <Mic
@@ -169,7 +169,7 @@ return (
 
         <button
           onClick={loading ? stop : send}
-          className={`rounded-xl p-3 transition ${
+          className={`rounded-2xl p-3 shadow-lg transition duration-200 hover:scale-105 ${
             loading
               ? "bg-red-600 hover:bg-red-500"
               : "bg-orange-500 hover:bg-orange-400"

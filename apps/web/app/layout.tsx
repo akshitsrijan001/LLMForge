@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "antd/dist/reset.css";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 import { SettingsProvider } from "../hooks/useSettings";
 
@@ -31,6 +32,12 @@ export default function RootLayout({
         <SettingsProvider>
           {children}
         </SettingsProvider>
+
+        <Toaster
+  richColors
+  position="bottom-right"
+  theme="dark"
+/>
       </body>
     </html>
   );

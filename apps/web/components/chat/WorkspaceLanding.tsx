@@ -19,34 +19,34 @@ type Props = {
 
 const actions = [
   {
-    icon: Code2,
-    title: "Build FastAPI API",
-    prompt: "Generate a production-ready FastAPI project with JWT authentication.",
-  },
-  {
-    icon: Brain,
-    title: "Explain Repository",
-    prompt: "Explain the architecture of this project.",
-  },
-  {
-    icon: FileText,
-    title: "Summarize Documents",
-    prompt: "Summarize the uploaded documents.",
+    icon: Sparkles,
+    title: "Generate Image",
+    prompt: "Generate an image of a futuristic cyberpunk city at sunset.",
   },
   {
     icon: Search,
-    title: "Search Knowledge Base",
-    prompt: "Explain this project from the indexed knowledge base.",
+    title: "Search the Web",
+    prompt: "Latest AI news today.",
   },
   {
-    icon: Database,
-    title: "Optimize Database",
-    prompt: "Optimize my database schema.",
+    icon: FileText,
+    title: "Summarize PDF",
+    prompt: "Summarize the uploaded PDF.",
+  },
+  {
+    icon: Brain,
+    title: "Ask Knowledge Base",
+    prompt: "Answer using my knowledge base.",
+  },
+  {
+    icon: Code2,
+    title: "Explain Code",
+    prompt: "Explain this code in simple terms.",
   },
   {
     icon: FileCode2,
-    title: "Debug Code",
-    prompt: "Help me debug my code.",
+    title: "Generate README",
+    prompt: "Generate a professional GitHub README.",
   },
 ];
 
@@ -75,17 +75,13 @@ export default function WorkspaceLanding({
         </div>
 
         <h1 className="text-6xl font-black tracking-tight">
-
-          LLM<span className="text-orange-500">Forge</span>
-
+        Welcome to <span className="text-orange-500">LLMForge</span>
         </h1>
 
         <p className="mt-5 text-xl text-gray-400 max-w-3xl mx-auto leading-9">
-
-          Your local AI development workspace with multiple LLMs,
-          Retrieval-Augmented Generation, DSPy prompt optimization
-          and intelligent model routing.
-
+  Your all-in-one local AI workspace for chatting with LLMs,
+  generating images, searching the web, analyzing documents,
+  and interacting with your private knowledge base.
         </p>
 
         <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -100,6 +96,10 @@ export default function WorkspaceLanding({
 
           <Badge icon={<Brain size={16}/>}>
             Model : {model}
+          </Badge>
+
+          <Badge icon={<Sparkles size={16}/>}>
+          Image Generation Ready
           </Badge>
 
         </div>
@@ -189,12 +189,13 @@ export default function WorkspaceLanding({
         <div className="flex flex-wrap gap-3">
 
           {[
-            "Explain React hooks",
-            "Summarize README",
-            "Optimize FastAPI",
-            "Generate unit tests",
-            "Improve architecture",
-          ].map((item) => (
+  "Generate an image of Iron Man",
+  "Latest AI news",
+  "Summarize uploaded PDF",
+  "Explain my React code",
+  "Create GitHub README",
+  "Optimize SQL database",
+].map((item) => (
 
             <button
 

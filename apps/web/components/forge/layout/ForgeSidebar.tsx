@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   Activity,
   Boxes,
+  BookOpen,
   Bot,
   ChevronDown,
   Database,
@@ -103,24 +104,49 @@ export default function ForgeSidebar() {
       </div>
 
       <div className="mt-auto">
-        <Link
-          href="/workspace/settings"
-          className="mb-3 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm text-white/65 transition hover:bg-white/[0.055] hover:text-white"
-        >
-          <Settings size={17} />
-          Settings
-        </Link>
 
-        <div className="flex items-center gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.035] p-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-blue-500 font-semibold">
-            S
-          </div>
-          <div className="min-w-0">
-            <div className="truncate text-sm font-medium text-white">Srijan</div>
-            <div className="font-mono text-[10px] uppercase tracking-widest text-white/40">Builder</div>
-          </div>
-        </div>
+  <Link
+    href="/workspace/guide"
+    className={`mb-2 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm transition ${
+      pathname.startsWith("/workspace/guide")
+        ? "border border-orange-500/25 bg-orange-500/15 text-orange-300 shadow-sm shadow-orange-950/20"
+        : "text-white/65 hover:bg-white/[0.055] hover:text-white"
+    }`}
+  >
+    <BookOpen size={17} />
+    Guide
+  </Link>
+
+  <Link
+    href="/workspace/settings"
+    className={`mb-3 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm transition ${
+      pathname.startsWith("/workspace/settings")
+        ? "border border-orange-500/25 bg-orange-500/15 text-orange-300 shadow-sm shadow-orange-950/20"
+        : "text-white/65 hover:bg-white/[0.055] hover:text-white"
+    }`}
+  >
+    <Settings size={17} />
+    Settings
+  </Link>
+
+  <div className="flex items-center gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.035] p-3">
+    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-blue-500 font-semibold">
+      S
+    </div>
+
+    <div className="min-w-0">
+      <div className="truncate text-sm font-medium text-white">
+        Srijan
       </div>
+
+      <div className="font-mono text-[10px] uppercase tracking-widest text-white/40">
+        Builder
+      </div>
+    </div>
+
+  </div>
+
+</div>
     </aside>
   );
 }

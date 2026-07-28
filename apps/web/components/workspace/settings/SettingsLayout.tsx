@@ -1,4 +1,3 @@
-import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 import InfrastructureCard from "./InfrastructureCard";
 import InferenceCard from "./InferenceCard";
@@ -6,41 +5,41 @@ import InterfaceCard from "./InterfaceCard";
 
 export default function SettingsLayout() {
   return (
-    <div className="flex min-h-screen bg-[#0B1020] text-white">
-      <Sidebar />
+    <main className="flex-1 overflow-y-auto bg-[#0b0a09] text-white">
 
-      <main className="flex-1 flex flex-col">
+      <TopBar />
 
-        <TopBar />
+      <div className="mx-auto max-w-5xl px-8 py-8 lg:px-12">
 
-        <div className="flex-1 flex justify-center">
+        <div className="mb-10">
 
-          <div className="w-full max-w-6xl px-12 py-12">
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.28em] text-orange-300/70">
+            Workspace Configuration
+          </p>
 
-            <h1 className="text-5xl font-bold">
-              System Environment
-            </h1>
+          <h1 className="text-4xl font-bold tracking-tight text-white">
+            Settings
+          </h1>
 
-            <p className="text-gray-400 text-lg mt-4 mb-12">
-              Manage your local LLM connections, embedding models and vector databases.
-            </p>
-
-            <InfrastructureCard />
-
-            <div className="mt-8">
-              <InferenceCard />
-            </div>
-
-            <div className="mt-8">
-              <InterfaceCard />
-            </div>
-
-          </div>
+          <p className="mt-3 max-w-3xl text-[15px] leading-7 text-white/45">
+            Configure your local AI environment, inference defaults, interface
+            preferences and workspace behaviour.
+          </p>
 
         </div>
 
-      </main>
+        <div className="mx-auto max-w-4xl space-y-8">
 
-    </div>
+          <InfrastructureCard />
+
+          <InferenceCard />
+
+          <InterfaceCard />
+
+        </div>
+
+      </div>
+
+    </main>
   );
 }

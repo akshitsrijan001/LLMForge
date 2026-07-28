@@ -1,8 +1,8 @@
 from fastapi import APIRouter
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from app.services.ollama import chat
+from app.services.ai_engine import AIEngine
 from app.services.router import choose_model
 from app.services.web_search import search_web
 from app.services.query_classifier import detect_intent
@@ -86,6 +86,8 @@ def chat_route(request: ChatRequest):
 
         print("🌍 Using frontend web context")
         web_context = request.web_context
+        print("Web Context Preview:")
+        print(web_context[:500])
 
     elif intent["needs_web"]:
 
@@ -142,16 +144,24 @@ QUESTION
 {request.prompt}
 """
 
-    stream = chat(
-        model=selected_model,
-        prompt=final_prompt,
-        history=[m.model_dump() for m in request.history[-8:]],
-        files=[f.model_dump() for f in request.files],
-        knowledge_base=request.knowledge_base,
-        generation_settings=request.generation_settings.model_dump(),
-    )
+    engine = AIEngine()
 
+    result = engine.generate(
+    model=selected_model,
+    prompt=request.prompt,
+    history=[m.model_dump() for m in request.history[-8:]],
+    files=[f.model_dump() for f in request.files],
+    knowledge_base=request.knowledge_base,
+    generation_settings=request.generation_settings.model_dump(),
+    web_context=web_context,
+)
+
+# Image/tool responses
+    if isinstance(result, dict):
+        return JSONResponse(result)
+
+# Normal LLM responses
     return StreamingResponse(
-        stream,
+        result,
         media_type="text/plain",
-    )
+)

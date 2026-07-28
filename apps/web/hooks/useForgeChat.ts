@@ -4,6 +4,8 @@ import { useState } from "react";
 import { streamChat } from "@/services/chat.service";
 import { saveMessage } from "@/services/api.service";
 import { searchWeb } from "@/services/search.service";
+import { generateImage } from "@/services/image.service";
+import { toast } from "sonner";
 
 export interface WebSource {
   title: string;
@@ -13,7 +15,6 @@ export interface WebSource {
 export interface Message {
   role: "user" | "assistant";
   content: string;
-
   images?: string[];
   sources?: WebSource[];
 }
@@ -45,79 +46,137 @@ export function useForgeChat() {
       content: prompt,
     };
 
-    // Add user message + empty assistant message
-    setMessages((prev) => {
-      const updated = [
-        ...prev,
-        userMessage,
-        {
-          role: "assistant" as const,
-          content: "",
-        },
-      ];
+    setMessages((prev) => [
+      ...prev,
+      userMessage,
+      {
+        role: "assistant",
+        content: "",
+      },
+    ]);
 
+    setLoading(true);
 
+    const imageRequest =
+  /\b(generate|create|draw|design|illustrate)\b/i.test(prompt) &&
+  /\b(image|picture|photo|art|logo|portrait)\b/i.test(prompt);
+
+if (imageRequest) {
+  try {
+    const data = await generateImage(prompt);
+
+    const imageUrl =
+      `http://127.0.0.1:8188/view?filename=${data.image.filename}` +
+      `&subfolder=${data.image.subfolder}` +
+      `&type=${data.image.type}`;
+      
+
+    setMessages(prev => {
+      const updated = [...prev];
+
+      updated[updated.length - 1] = {
+        role: "assistant",
+        content: "",
+        images: [imageUrl],
+      };
+
+      return updated;
+    });
+    toast.success("Image generated successfully!");
+
+    if (sessionId) {
+      await saveMessage(sessionId, "user", prompt);
+      await saveMessage(
+  sessionId,
+  "assistant",
+  JSON.stringify({
+    content: "",
+    images: [imageUrl],
+  })
+);
+    }
+
+    return;
+  } catch (err) {
+    console.error(err);
+
+    setMessages(prev => {
+      const updated = [...prev];
+
+      updated[updated.length - 1] = {
+        role: "assistant",
+        content: "❌ Image generation failed.",
+      };
 
       return updated;
     });
 
-    setLoading(true);
+    return;
+  } finally {
+    setLoading(false);
+  }
+}
 
-let response = "";
+    let response = "";
+    let webContext = "";
+    let webImages: string[] = [];
+    let webSources: WebSource[] = [];
 
-let webContext = "";
-let webImages: string[] = [];
-let webSources: any[] = [];
+    try {
+      // Optional web search
+      try {
+        const search = await searchWeb(prompt);
 
-try {
-
-  const search = await searchWeb(prompt);
-
-  webContext = search.context;
-  webImages = search.images;
-  webSources = search.sources;
-      const stream = await streamChat({
-        prompt,
-        model,
-        history,
-        files,
-        knowledge_base: knowledgeBase,
-        web_context: webContext,
-        generation_settings: {
-          temperature: 0.4,
-          topP: 0.95,
-          context: 4096,
-        },
-      });
-
-      if (!stream) {
-        throw new Error("No stream returned");
+        webContext = search.context ?? "";
+        webImages = search.images ?? [];
+        webSources = search.sources ?? [];
+      } catch {
+        console.log("No web search results.");
       }
 
-      const reader = stream.getReader();
-      const decoder = new TextDecoder();
+      const result = await streamChat({
+  prompt,
+  model,
+  history,
+  files,
+  knowledge_base: knowledgeBase,
+  web_context: webContext,
+  generation_settings: {
+    temperature: 0.4,
+    topP: 0.95,
+    context: 4096,
+  },
+});
 
-      
+const reader = result.data.getReader();
+const decoder = new TextDecoder();
 
-      while (true) {
-        const { done, value } = await reader.read();
+while (true) {
+  const { done, value } = await reader.read();
 
-        if (done) break;
+  if (done) break;
 
-        response += decoder.decode(value, {
-          stream: true,
-        });
+  response += decoder.decode(value, {
+    stream: true,
+  });
 
-        setMessages((prev) => {
-          const updated = [...prev];
+  setMessages(prev => {
+    const updated = [...prev];
 
-          updated[updated.length - 1] = {
-            role: "assistant",
-            content: response,
-          };
+    updated[updated.length - 1] = {
+      role: "assistant",
+      content: response,
+      images: webImages,
+      sources: webSources,
+    };
 
-          return updated;
-        });
+    return updated;
+  });
+}
+
+      if (sessionId) {
+        await saveMessage(sessionId, "user", userMessage.content);
+        await saveMessage(sessionId, "assistant", response);
       }
     } catch (err) {
       console.error(err);
@@ -132,43 +191,7 @@ try {
 
         return updated;
       });
-      setMessages((prev) => {
-  const updated = [...prev];
-
-  updated[updated.length - 1] = {
-    role: "assistant",
-    content: response,
-    images: webImages,
-    sources: webSources,
-  };
-
-  return updated;
-});
     } finally {
-      if (sessionId) {
-    const finalMessages = [
-    ...history,
-    userMessage,
-    {
-        role: "assistant" as const,
-        content: response,
-        images: webImages,
-        sources: webSources,
-    },
-];
-
-    await saveMessage(
-        sessionId,
-        "user",
-        userMessage.content
-    );
-
-    await saveMessage(
-        sessionId,
-        "assistant",
-        response
-    );
-}
       setLoading(false);
     }
   }

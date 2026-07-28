@@ -12,8 +12,25 @@ export async function streamChat(body: any) {
   });
 
   if (!res.ok) {
-    throw new Error("Backend error");
+    throw new Error(`Backend Error (${res.status})`);
   }
 
-  return res.body;
+  const contentType = res.headers.get("content-type") ?? "";
+
+  // Future support for JSON responses (image generation, tools, etc.)
+  if (contentType.includes("application/json")) {
+    return {
+      type: "json",
+      data: await res.json(),
+    };
+  }
+
+  if (!res.body) {
+    throw new Error("No response stream.");
+  }
+
+  return {
+    type: "stream",
+    data: res.body,
+  };
 }

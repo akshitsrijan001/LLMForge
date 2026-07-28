@@ -5,7 +5,7 @@ import { Command, Sparkles } from "lucide-react";
 import { Counter, StatusPill } from "../common/Primitives";
 
 export function ForgeHero({
-  name = "Alex",
+  name = "Srijan",
 }: {
   name?: string;
 }) {

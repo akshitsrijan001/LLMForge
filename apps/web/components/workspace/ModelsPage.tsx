@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getInstalledModels } from "../../services/system.service";
 import ModelCard from "./models/ModelCard";
+
 function formatBytes(bytes: number) {
   return (bytes / 1024 / 1024 / 1024).toFixed(2) + " GB";
 }
@@ -20,19 +21,44 @@ export default function ModelsPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#0B1020] p-10 text-white">
-      <div className="mx-auto max-w-7xl">
+    <div className="space-y-8">
 
-        <h1 className="text-4xl font-bold text-orange-400">
-          🤖 Models
-        </h1>
+      {/* Stats */}
 
-        <p className="mt-4 max-w-3xl text-lg text-gray-400">
-          Configure local and cloud language models, compare performance and
-          manage inference settings for your AI workspace.
-        </p>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
 
-        <div className="mt-10 grid gap-6">
+        <div className="rounded-3xl border border-[#35291F] bg-[#221C18] p-6 shadow-xl shadow-black/20">
+          <p className="text-sm text-gray-400">Installed Models</p>
+          <h2 className="mt-2 text-3xl font-bold text-orange-400">
+            {models.length}
+          </h2>
+        </div>
+
+        <div className="rounded-3xl border border-[#35291F] bg-[#221C18] p-6 shadow-xl shadow-black/20">
+          <p className="text-sm text-gray-400">Inference</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white">
+            Local
+          </h2>
+        </div>
+
+        <div className="rounded-3xl border border-[#35291F] bg-[#221C18] p-6 shadow-xl shadow-black/20">
+          <p className="text-sm text-gray-400">Provider</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white">
+            Ollama
+          </h2>
+        </div>
+
+      </div>
+
+      {/* Installed Models */}
+
+      <div className="rounded-3xl border border-[#35291F] bg-[#221C18] p-7 shadow-xl shadow-black/20">
+
+        <h2 className="mb-6 text-2xl font-bold text-white">
+          Installed Models
+        </h2>
+
+        <div className="grid gap-5">
 
           {models.map((model) => (
             <ModelCard
@@ -48,6 +74,7 @@ export default function ModelsPage() {
         </div>
 
       </div>
-    </main>
+
+    </div>
   );
 }

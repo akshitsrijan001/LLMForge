@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import ImageViewerModal from "./ImageViewerModal";
+import ImageToolbar from "./ImageToolbar";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -44,6 +46,8 @@ export default function MessageBubble({
   const isUser = role === "user";
 
   const [copied, setCopied] = useState(false);
+  const [selectedImage, setSelectedImage] =
+  useState<string | null>(null);
 
   const copyMessage = () => {
     navigator.clipboard.writeText(content);
@@ -112,10 +116,10 @@ export default function MessageBubble({
           {/* Bubble */}
 
           <div
-  className={`relative overflow-hidden rounded-2xl transition-all ${
+  className={`group relative overflow-hidden rounded-2xl transition-all ${
     isUser
-      ? "max-w-[700px] bg-orange-500 text-white px-6 py-5 shadow-xl"
-      : "w-fit max-w-[700px] border border-[#2B211B] bg-[#221C18] px-7 py-6 shadow-xl shadow-black/20"
+      ? "max-w-[750px] bg-orange-500 text-white px-6 py-5 shadow-xl"
+      : "w-fit max-w-[900px] border border-[#2B211B] bg-[#221C18] px-7 py-6 shadow-xl shadow-black/20"
   }`}
 >
             {/* Copy */}
@@ -216,7 +220,8 @@ hover:text-white
                 prose-code:after:content-none
                 prose-code:text-orange-300
               "
-                        >  <ReactMarkdown
+                        >  
+                        <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
                   code({ className, children }) {
@@ -289,25 +294,31 @@ hover:text-white
               </ReactMarkdown>
               {!isUser && images.length > 0 && (
   <div className="mt-8">
-    <h3 className="mb-3 text-sm font-semibold text-orange-300">
-      🖼 Images
-    </h3>
+    
 
     <div className="flex gap-3 overflow-x-auto pb-2">
-      {images.map((img, index) => (
-        <img
-          key={index}
-          src={img}
-          alt={`Result ${index + 1}`}
-          className="h-32 w-44 rounded-xl border border-[#35291F] object-cover shadow-lg transition hover:scale-105 cursor-pointer"
-          onClick={() => window.open(img, "_blank")}
-        />
-      ))}
-    </div>
-  </div>
-)}
+    
 
-              {!isUser && content === "" && (
+    {images.map((img, index) => (
+  <div
+  key={index}
+  className="rounded-2xl bg-[#171311] p-3 border border-[#35291F]"
+>
+    <img
+      src={img}
+      alt={`Result ${index + 1}`}
+      className="max-h-[420px] max-w-[520px] rounded-2xl border border-[#35291F] object-cover shadow-xl transition duration-200 hover:scale-[1.02] cursor-pointer"
+      onClick={() => setSelectedImage(img)}
+    />
+
+    <ImageToolbar image={img} />
+  </div>
+))}
+</div>
+</div>
+)} 
+
+              {!isUser && content === "" && images.length === 0 &&(
                 <div className="flex items-center gap-2 py-3">
                   <span className="h-2 w-2 animate-bounce rounded-full bg-orange-400"></span>
                   <span
@@ -328,6 +339,10 @@ hover:text-white
           </div>
         </div>
       </div>
+      <ImageViewerModal
+  image={selectedImage}
+  onClose={() => setSelectedImage(null)}
+/>
     </motion.div>
   );
 }

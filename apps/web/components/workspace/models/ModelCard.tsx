@@ -12,81 +12,91 @@ export default function ModelCard({
   family,
   parameters,
   quantization,
-}: Props) 
-{const copyName = async () => {
-  await navigator.clipboard.writeText(name);
-};
+}: Props) {
+  const copyName = async () => {
+    await navigator.clipboard.writeText(name);
+  };
+
   return (
-  <div className="rounded-2xl border border-slate-700 bg-[#142338] p-6 transition hover:border-orange-500">
+    <div className="group rounded-[28px] border border-white/[0.06] bg-white/[0.025] p-7 shadow-2xl shadow-black/20 transition-all duration-300 hover:-translate-y-1 hover:border-orange-500/40">
 
-    <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
 
-      <div>
-        <h2 className="text-xl font-bold text-white">
-          {name}
-        </h2>
+        <div>
 
-        <p className="mt-2 text-gray-400">
-          {family}
-        </p>
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.28em] text-orange-300/70">
+            Installed Model
+          </p>
+
+          <h2 className="text-2xl font-bold text-white">
+            {name}
+          </h2>
+
+          <p className="mt-2 text-white/45">
+            {family}
+          </p>
+
+        </div>
+
+        <div className="flex items-center gap-3">
+
+          <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
+            Installed
+          </span>
+
+          <span className="rounded-xl border border-white/10 bg-[#12100e] px-4 py-2 font-semibold text-orange-300">
+            {size}
+          </span>
+
+        </div>
+
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="my-8 h-px bg-white/[0.06]" />
 
-        <span className="rounded-full bg-green-900 px-3 py-1 text-sm text-green-300">
-          Installed
-        </span>
+      <div className="grid gap-4 md:grid-cols-2">
 
-        <span className="rounded-lg bg-[#0B1628] px-4 py-2 font-semibold text-orange-400">
-          {size}
-        </span>
+        <div className="rounded-2xl border border-white/5 bg-[#12100e] p-5">
+
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
+            Parameters
+          </p>
+
+          <p className="mt-3 text-lg font-semibold text-white">
+            {parameters}
+          </p>
+
+        </div>
+
+        <div className="rounded-2xl border border-white/5 bg-[#12100e] p-5">
+
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
+            Quantization
+          </p>
+
+          <p className="mt-3 text-lg font-semibold text-white">
+            {quantization}
+          </p>
+
+        </div>
+
+      </div>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+
+        <button className="rounded-xl bg-orange-500 px-5 py-2.5 font-semibold text-black transition hover:bg-orange-400">
+          View Details
+        </button>
+
+        <button
+          onClick={copyName}
+          className="rounded-xl border border-white/10 bg-[#171311] px-5 py-2.5 font-medium text-white transition hover:border-orange-500 hover:bg-[#221C18]"
+        >
+          Copy Name
+        </button>
 
       </div>
 
     </div>
-
-    <div className="mt-8 grid grid-cols-2 gap-6">
-
-      <div>
-
-        <p className="text-sm text-gray-500">
-          Parameters
-        </p>
-
-        <p className="mt-1 text-white">
-          {parameters}
-        </p>
-
-      </div>
-
-      <div>
-
-        <p className="text-sm text-gray-500">
-          Quantization
-        </p>
-
-        <p className="mt-1 text-white">
-          {quantization}
-        </p>
-
-      </div>
-
-    </div>
-
-    <div className="mt-8 flex gap-3">
-
-      <button className="rounded-lg bg-orange-500 px-4 py-2 font-medium text-black hover:bg-orange-400">
-        Details
-      </button>
-
-      <button
-  onClick={copyName}
-  className="rounded-lg bg-slate-700 px-4 py-2 hover:bg-slate-600"
->
-  Copy Name
-</button>
-
-    </div>
-
-  </div>
-);}
+  );
+}

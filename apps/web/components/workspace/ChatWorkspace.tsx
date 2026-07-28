@@ -85,7 +85,23 @@ useEffect(() => {
     try {
       const data = await getSession(currentId);
 
-      setMessages(data.messages ?? []);
+const parsed = (data.messages ?? []).map((msg: any) => {
+  try {
+    const value = JSON.parse(msg.content);
+
+    if (value.images) {
+      return {
+        ...msg,
+        content: value.content ?? "",
+        images: value.images,
+      };
+    }
+  } catch {}
+
+  return msg;
+});
+
+setMessages(parsed);
       setLoaded(true);
     } catch (err) {
       console.error(err);
@@ -139,18 +155,19 @@ async function handleShare() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#0b0a09] text-white">
-      <div className="hidden xl:block">
-        <Sidebar
-          sessions={sessions}
-          currentId={currentId}
-          setCurrentId={setCurrentId}
-          newSession={newSession}
-          deleteSession={deleteSession}
-          renameSession={renameSession}
-          togglePin={togglePin}
-        />
-      </div>
+  <div className="flex h-screen overflow-hidden bg-[#0b0a09] text-white">
+    <div className="hidden xl:block">
+      <Sidebar
+        sessions={sessions}
+        currentId={currentId}
+        setCurrentId={setCurrentId}
+        newSession={newSession}
+        deleteSession={deleteSession}
+        renameSession={renameSession}
+        togglePin={togglePin}
+      />
+    </div>
+      
 
       <main className="flex min-w-0 flex-1 flex-col bg-[radial-gradient(circle_at_65%_0%,rgba(249,115,22,0.10),transparent_26%),#0b0a09]">
         <Header
