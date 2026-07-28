@@ -195,16 +195,31 @@ http://localhost:3000
 
 # 📸 Screenshots
 
-Screenshots will be added in the next release.
 
-Planned screenshots:
 
 - Dashboard
+<img width="946" height="443" alt="image" src="https://github.com/user-attachments/assets/e8875296-0c69-4f3d-bdfa-cc0813793150" />
+<img width="943" height="262" alt="image" src="https://github.com/user-attachments/assets/183e7c74-634c-4eb0-b17d-ab668a3455b4" />
+
+
 - Chat Workspace
+<img width="938" height="440" alt="image" src="https://github.com/user-attachments/assets/356ca463-1f8f-4c2d-9a6b-8e93b01969e9" />
+
 - Knowledge Base
+  <img width="944" height="429" alt="image" src="https://github.com/user-attachments/assets/3ca1dd39-1be3-4f50-94b3-9d54bfe2df10" />
+
 - Models
+  <img width="945" height="345" alt="image" src="https://github.com/user-attachments/assets/398c2a7b-8f29-48d1-9e23-11ef72750c9a" />
+
 - Settings
+  <img width="950" height="434" alt="image" src="https://github.com/user-attachments/assets/516cdd87-00b1-405d-8f0c-904121632c5f" />
+
+- Playground
+  <img width="329" height="289" alt="image" src="https://github.com/user-attachments/assets/e87b12ba-18b0-4464-a3d6-89e25166e7ee" />
+
 - Guide
+  <img width="946" height="401" alt="image" src="https://github.com/user-attachments/assets/b3b51bd0-b2d9-4a88-bacd-76f85dfdccea" />
+
 
 ---
 
