@@ -214,11 +214,12 @@ http://localhost:3000
 - Settings
   <img width="950" height="434" alt="image" src="https://github.com/user-attachments/assets/516cdd87-00b1-405d-8f0c-904121632c5f" />
 
-- Playground
-  <img width="329" height="289" alt="image" src="https://github.com/user-attachments/assets/e87b12ba-18b0-4464-a3d6-89e25166e7ee" />
-
 - Guide
   <img width="946" height="401" alt="image" src="https://github.com/user-attachments/assets/b3b51bd0-b2d9-4a88-bacd-76f85dfdccea" />
+
+- Playground
+  <img width="900" height="445" alt="image" src="https://github.com/user-attachments/assets/e87b12ba-18b0-4464-a3d6-89e25166e7ee" />
+
 
 
 ---
